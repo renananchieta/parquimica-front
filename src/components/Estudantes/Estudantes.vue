@@ -1,7 +1,8 @@
 <template>
     <v-container>
       <InfoCards 
-      :contadores="contadores"/>
+      :contadores="contadores"
+      :carregamento="carregando"/>
 
       <br>
 
@@ -109,7 +110,7 @@ const etapa_ensino = ref('');
 const status_elegibilidade = ref('');
 const carregando = ref(false);
 const items = ref([]);
-const status = ref(['Elegível', 'Não elegível', 'Elegibilidade indefinida', 'NÃO ENVIADO', 'Elegível com pendência']);
+const status = ref(['', 'Elegível', 'Não elegível', 'Elegibilidade indefinida', 'NÃO ENVIADO', 'Elegível com pendência']);
 const headers = ref([
    {title: "Aluno", key: "nome_aluno"},
    {title: "CPF aluno", key: "cpf"},

@@ -1,5 +1,18 @@
 <template>
-    <v-row>
+    <v-row >
+      <v-col v-if="props.carregamento == true">
+        <p class="text-center">
+          Aguarde
+        </p>
+        <v-progress-linear
+          color="primary"
+          height="6"
+          indeterminate
+          rounded
+        ></v-progress-linear>
+      </v-col>
+    </v-row>
+    <v-row v-if="props.carregamento == false">
       <v-col cols="12" md="4">
         <v-card>
           <v-card-title>Total de estudantes</v-card-title>
@@ -36,7 +49,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="props.carregamento == false">
       <v-col cols="12" md="4">
         <v-card>
           <v-card-title>Elegíveis com pendência</v-card-title>
@@ -85,6 +98,9 @@
       default: () => [],
       required: false,
     },
+    carregamento: {
+      required: false,
+    }
 })
 
 

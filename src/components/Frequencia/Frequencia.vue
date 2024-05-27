@@ -6,14 +6,14 @@
       titulo="Lotes de Frequência"
       @pesquisar="pesquisar">
           <v-row>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="8">
                 <v-text-field
                 v-model="lote"
                 label="Identificação do Lote"
                 variant="outlined"
                 density="compact"/>
              </v-col>
-             <v-col cols="12" md="6">
+             <v-col cols="12" md="4">
                 <v-text-field
                 v-model="dt_envio"
                 label="Data de envio"
