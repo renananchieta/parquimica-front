@@ -98,6 +98,9 @@ import api from '@/plugins/api';
 import { useAppStore } from '@/stores/app';
 import { ref } from 'vue';
 
+/**
+ * Data
+ */
 const store = useAppStore();
 const perfil = ref(store.usuario.perfil);
 const nome_aluno = ref('');
@@ -131,9 +134,6 @@ const contadores = ref([]);
   carregando.value = true;
 
    let params = {
-      // headers: {
-      //    Authorization: `Bearer ${localStorage.getItem('Authorization')}`
-      // },
       params: {
          nome_aluno: nome_aluno.value,
          nome_mae: nome_mae.value,

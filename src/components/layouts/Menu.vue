@@ -21,9 +21,10 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const items = ([
     { text: 'Home', icon: 'mdi-home', to: "/home"},
-    { text: 'Estudantes', icon: 'mdi-account', to: "/estudantes"},
-    { text: 'Lotes de Frequencia', icon: 'mdi-account', to: "/frequencia"},
-    { text: 'Frequencia de estudantes', icon: 'mdi-account', to: "/frequencia/frequencia-estudante"},
+    { text: 'Usuários', icon: 'mdi-account', to: "/admin/usuarios"},
+// { text: 'Estudantes', icon: 'mdi-account', to: "/estudantes"},
+    // { text: 'Lotes de Frequencia', icon: 'mdi-account', to: "/frequencia"},
+    // { text: 'Frequencia de estudantes', icon: 'mdi-account', to: "/frequencia/frequencia-estudante"},
     // { text: 'Perfis', icon: 'mdi-flag', to: "/perfi"},
     // { text: 'Ações', icon: 'mdi-flag', to: "/acoes"},
     // { text: 'Query Builder', icon: 'mdi-flag', to: "/query-builder"},

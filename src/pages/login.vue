@@ -9,7 +9,7 @@
         <div class="text-subtitle-1 text-medium-emphasis">Email</div>
   
         <v-text-field
-          v-model="form.login"
+          v-model="form.email"
           :readonly="carregando"
           density="compact"
           placeholder="Email address"
@@ -79,8 +79,8 @@ import { useRouter } from 'vue-router';
 const visible = ref(false);
 const carregando = ref(false);
 const form = ref({
-    login: "MASTER",
-    senha: "123456",
+    email: "admin.user@gmail.com",
+    senha: "12345678",
     device_name: ""
 });
 const token = ref("");
@@ -105,15 +105,18 @@ const ajaxLogin = async() => {
     const platform = window.navigator.platform;
     form.value.device_name = `${platform} - ${userAgent}`;
 
-    await api.post('/autenticacao', form.value)
+    await api.post('/login', form.value)
     .then((response) => {
-      store.usuario.token = response.data.token;
-      store.usuario.nome = response.data.nome;
-      store.usuario.codigo_usuario = response.data.codigo_usuario;
-      store.usuario.perfil = response.data.perfil;
+      store.usuario = response.data;
+      localStorage.setItem('Authorization', store.usuario.token);
+      localStorage.setItem('user', response.data);
+      
+      // store.usuario.token = response.data.token;
+      // store.usuario.nome = response.data.nome;
+      // store.usuario.codigo_usuario = response.data.codigo_usuario;
+      // store.usuario.perfil = response.data.perfil;
       console.log(store.usuario);
 
-      localStorage.setItem('Authorization', store.usuario.token);
 
       abrirSessaoOuUrl("/home");
     })

@@ -50,7 +50,7 @@ const initialization = () => {
                 'rgb(153, 102, 255)',
                 'rgb(201, 203, 207)'
             ],
-            borderWidth: 2
+            borderWidth: 1
         }]
     };
 
