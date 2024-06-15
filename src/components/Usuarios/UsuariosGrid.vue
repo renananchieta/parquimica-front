@@ -84,7 +84,7 @@
              size="x-large"
              class="botao-novo bg-success"
              color="white"
-             to="/usuario/create"
+             to="/admin/usuarios/create"
            />
          </v-toolbar>
        </template>
@@ -142,7 +142,7 @@
    { title: "ID", key: "id" },
    { title: "Nome", key: "nome" },
    { title: "E-mail", key: "email" },
-   { title: "Perfil(s)", key: "perfil" },
+   { title: "Perfil(s)", key: "perfisUsuarioDesc" },
    // { title: "Situação",  key: "ativo" },
    { title: "Ações", align:"end", key: "actions"}
  ]);
@@ -154,7 +154,7 @@
  });
  const situacao = ref(false);
  
- type ReadonlyHeaders = InstanceType<typeof VDataTable>['headers']
+ type ReadonlyHeaders = InstanceType<typeof VDataTable>['headers'];
  
  /**
   * Methods
@@ -186,7 +186,7 @@
    situacao.value == false ? form.value.situacao = "ativo" : form.value.situacao = "todas"
  
    carregando.value = true;
-   api.get("/admin/usuario/grid", {
+   api.get("/admin/usuarios", {
      params: form.value
    })
    .then((response) => {

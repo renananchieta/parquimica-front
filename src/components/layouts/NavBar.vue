@@ -34,7 +34,7 @@
             <v-app-bar-nav-icon @click="navBar = !navBar"></v-app-bar-nav-icon>
         </template>
 
-        <v-app-bar-title>Sistema de Acompanhamento - Pé de meia</v-app-bar-title>
+        <v-app-bar-title>Parquimica</v-app-bar-title>
     </v-app-bar>
 </template>
 
