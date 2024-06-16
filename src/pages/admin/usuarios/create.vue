@@ -17,7 +17,7 @@
                         </v-col>
                         <v-col cols="12" md="6">
                             <v-text-field
-                              v-model="form.nome_social"
+                              v-model="form.nomeSocial"
                               label="Nome social"
                               variant="outlined"
                               density="compact"
@@ -37,7 +37,7 @@
 
                         <v-col cols="12" md="6">
                             <v-text-field
-                              v-model="form.dt_nascimento"
+                              v-model="form.dtNascimento"
                               label="Data de nascimento *"
                               type="date"
                               variant="outlined"
@@ -50,7 +50,6 @@
                             <v-text-field 
                               v-model="form.contato"
                               label="Contado"
-                              type="password"
                               variant="outlined"
                               density="compact"
                               />
@@ -58,9 +57,8 @@
 
                         <v-col cols="12" md="3">
                             <v-text-field 
-                              v-model="form.contato_wpp"
+                              v-model="form.contatoWpp"
                               label="Contato Wpp *"
-                              type="password"
                               variant="outlined"
                               density="compact"
                               />
@@ -72,7 +70,7 @@
                               label="Perfil *"
                               :items="comboPerfil"
                               item-title="text"
-                              item-value="value"
+                              item-value="id"
                               chips
                               small-chips
                               multiple
@@ -156,21 +154,42 @@ import { onMounted, ref } from 'vue';
  const comboPerfil = ref([]);
  const form = ref({
     nome: '',
-    nome_social: '',
+    nomeSocial: '',
     email: '',
-    dt_ascimento: '',
+    dtNascimento: '',
     senha: ref(''),
     senha_confirmation: ref(''),
     cpf: '',
     contato: '',
-    contato_wpp: '',
+    contatoWpp: '',
     perfil: null,
 });
+const mensagem = ref('');
+const nomeUsuarioCadastrado = ref('');
 
 /**
  * Methods
  */
 const salvar = () => {
+    carregando.value = true;
+    if(form.value.senha != form.value.senha_confirmation){
+        alert('Os campos de senha não estão iguais.');
+        carregando.value = false;
+    } else {
+        const perfilArray = form.value.perfil.map(id => ({ id: id }));
+        const payload = { ...form.value, perfil: perfilArray };
+        api.post('/admin/usuario', payload)
+        .then((response) => {
+            mensagem.value = response.data.mensagem;
+            nomeUsuarioCadastrado.value = response.data.usuario;
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        .finally(() => {
+            carregando.value = false;
+        })
+    }
 };
 
 const getCombos = () => {
