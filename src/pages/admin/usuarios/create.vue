@@ -23,8 +23,8 @@
                               density="compact"
                               />
                         </v-col>
-                        
                     </v-row>
+                    
                     <v-row>
                         <v-col cols="12" md="6">
                             <v-text-field
@@ -109,10 +109,6 @@
                               density="compact"
                               />
                         </v-col>
-                    </v-row>
-
-                    <v-row>
-                        
                     </v-row>
 
                     <v-card-actions>
