@@ -169,8 +169,8 @@
    if (!id) return alert("ID não identificado");
    if (item.title === "Editar")
     return router.push(`/admin/usuarios/${id}`);
-   if (item.title === "Visualizar")
-     return router.push(`/usuario/${id}/view`);
+  //  if (item.title === "Visualizar")
+  //    return router.push(`/usuario/${id}/view`);
      if (item.title === "Excluir")
      return ajaxExcluir(id);
      // return router.push(`/usuario/${id}/view`);

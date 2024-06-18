@@ -112,9 +112,9 @@ const abrirRotaMenu = (item, id) => {
  if (!item) return alert("Item não identificado");
  if (!id) return alert("ID não identificado");
  if (item.title === "Editar")
-   return router.push(`/perfil/${id}/edit`);
- if (item.title === "Visualizar")
-   return router.push(`/perfil/${id}/view`);
+   return router.push(`/admin/perfil/${id}`);
+//  if (item.title === "Visualizar")
+//    return router.push(`/perfil/${id}/view`);
  if (item.title === "Excluir")
    return ajaxExcluir(id);
    // return router.push(`/usuario/${id}/view`);
