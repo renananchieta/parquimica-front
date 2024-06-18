@@ -4,12 +4,6 @@
           color="blue-grey-darken-4"
           class="pa-4 centralizado"
           position="relative">
-            <v-avatar 
-              class="mb-4"
-              size="60" 
-              color="surface-variant">
-              <v-img src="https://media.licdn.com/dms/image/D4D03AQEm1IKLlt96ow/profile-displayphoto-shrink_800_800/0/1694730333398?e=2147483647&v=beta&t=ycSamjv4It_Bzow3HeS_KPO7O9eSQIqrkCda-lG0UCQ" cover></v-img>
-            </v-avatar>
             <div >{{ store.usuario.nome }}</div>
         </v-sheet>
         <v-divider></v-divider>

@@ -8,7 +8,7 @@ import { useRoute, useRouter } from 'vue-router';
 /**
  * Data
  */
- const route = useRoute('/admin/usuarios/[id]');
+ const route = useRoute('/admin/usuarios/[id]/edit');
  const router = useRouter();
  console.log(route.params.id);
 

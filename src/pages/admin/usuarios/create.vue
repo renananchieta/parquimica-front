@@ -126,7 +126,7 @@
                               type="reset"
                               variant="elevated"
                               color="deep-orange lighten-1"
-                              to="/usuario"
+                              to="/admin/usuarios"
                             >
                                 <v-icon>mdi-arrow-left</v-icon>
                                 Voltar
