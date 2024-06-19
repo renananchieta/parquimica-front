@@ -8,6 +8,7 @@
                   :headers="headers"
                   :items="dados"
                   hover
+                  items-per-page-text="Itens por página"
                 />
             </v-card-text>
         </v-card>    
