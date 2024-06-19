@@ -79,8 +79,8 @@ import { useRouter } from 'vue-router';
 const visible = ref(false);
 const carregando = ref(false);
 const form = ref({
-    email: "admin.user@gmail.com",
-    senha: "12345678",
+    email: "",
+    senha: "",
     device_name: ""
 });
 const token = ref("");
