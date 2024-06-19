@@ -1,7 +1,7 @@
 <template>
-  <QueryBuilder />
+    <CatalogoInicial />
 </template>
-  
+
 <script setup>
 
 </script>
