@@ -122,7 +122,7 @@ const ajaxLogin = async() => {
     })
     .catch((error) => {
         carregando.value = false;
-        alert(error.response.data.message);
+        // alert(error.response.data.message);
     })
     .finally(() => {
         carregando.value = false;
