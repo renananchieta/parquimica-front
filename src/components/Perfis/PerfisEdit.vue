@@ -1,8 +1,8 @@
 <template>
     <v-container>
-        <v-form @submit.prevent="ajaxNovo" ref="form" lazy-validation>
+        <v-form @submit.prevent="ajaxEdicao" ref="form" lazy-validation>
             <v-card :loading="carregando">
-                <v-card-title>Cadastro de Perfil</v-card-title>
+                <v-card-title>Alteração de Perfil</v-card-title>
                 <v-divider/>
 
                 <v-card-text>
@@ -49,10 +49,8 @@
                                     </td>
                                     <td v-if="isUsuarioAdmin">
                                         <v-chip
-                                        :color="corChip(subItem)"
                                         fab
                                         x-small
-                                        :to="link(subItem)"
                                         class="elevation-0"
                                         >
                                             {{ subItem.total_dependencia }}
@@ -92,15 +90,82 @@
 </template>
 
 <script setup>
-
+import api from "@/plugins/api";
+import { isUsuarioAdmin } from "@/utils/helpers"
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
 
 /**
  * Data
  */
+ const route = useRoute();
  const carregando = ref(false);
+ const grupos = ref([]);
+ const grupo = ref("");
+ const dados = ref([]);
  const formPerfil = ref({
     id:0,
     perfil:"",
     permissoes: []
 });
+const dialog = ref(false);
+const mensagemApi = ref("");
+
+/**
+ * Methods
+ */
+
+const link = (subItem) => {
+    return `/acao/${subItem.id}/edit`;
+};
+
+ const edit = () => {
+    carregando.value = true;
+    api.get(`/perfil/${route.params.id}/edit`)
+    .then((response) => {
+        grupos.value = response.data.grupos;
+        grupos.value.unshift('Todos');
+        dados.value = response.data.destaque;
+        formPerfil.value.id = response.data.registro.id;
+        formPerfil.value.perfil = response.data.registro.perfil;
+        formPerfil.value.permissoes = response.data.permissoes_concedidas;
+    })
+    .finally(() => {
+        carregando.value = false;
+    }) 
+};
+
+const filtrar = (indicePai) => {
+    if(grupo.value === 'Todos') {
+        return true;
+    } else if (grupo.value !== '') {
+        return dados.value[indicePai].nome === grupo.value;
+    } else return true;
+};
+
+ const ajaxEdicao = () => {
+    carregando.value = true;
+    mensagemApi.value = 'Aguarde...'
+    dialog.value = true;
+    api.patch(`/perfil/${route.params.id}`, formPerfil.value)
+    .then((response) =>{
+        mensagemApi.value = response.data.message
+        setTimeout(() => {
+            (dialog.value = false);
+        }, 3000);
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+    .finally(() => {
+        carregando.value = false;
+    })
+};
+
+/**
+ * Hooks
+ */
+onMounted(() => {
+    edit();
+})
 </script>
