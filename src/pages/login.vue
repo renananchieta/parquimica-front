@@ -122,7 +122,7 @@ const ajaxLogin = async() => {
     })
     .catch((error) => {
         carregando.value = false;
-        // alert(error.response.data.message);
+        alert(error.response.data.message);
     })
     .finally(() => {
         carregando.value = false;
@@ -142,7 +142,7 @@ const abrirSessaoOuUrl = (url) => {//usado na tela de login
 const baixarCookie = async () => {
   const url = import.meta.env.VITE_BASE_URL;
   return await api.get(`${url}/sanctum/csrf-cookie`).catch(() => {
-    alert("Erro ao baixar cookie: Erro de comunicação com a rede");
+    // alert("Erro ao baixar cookie: Erro de comunicação com a rede");
   });
 };
 
