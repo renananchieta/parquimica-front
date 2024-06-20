@@ -76,7 +76,7 @@
 
                 <v-card-text>
                     <v-btn
-                    color="blue"
+                    color="botao"
                     type="buttom"
                     position="fixed"
                     icon="mdi-content-save"

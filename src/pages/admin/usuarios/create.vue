@@ -115,7 +115,7 @@
                         <v-spacer/>
                             <v-btn
                               variant="elevated"
-                              color="blue"
+                              color="botao"
                               :loading="carregando"
                               type="submit"
                             >
