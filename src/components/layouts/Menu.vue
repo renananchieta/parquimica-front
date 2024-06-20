@@ -22,8 +22,8 @@ const router = useRouter();
 const items = ([
     { text: 'Home', icon: 'mdi-home', to: "/home"},
     { text: 'Usuários', icon: 'mdi-account', to: "/admin/usuarios"},
-    { text: 'Perfis', icon: 'mdi-account', to: "/admin/perfil"},
-    { text: 'Catálogo', icon: 'mdi-account', to: "/catalogo"},
+    { text: 'Perfis', icon: 'mdi mdi-account-card-outline', to: "/admin/perfil"},
+    { text: 'Catálogo', icon: 'mdi mdi-view-list', to: "/catalogo"},
 ]);
 </script>
 

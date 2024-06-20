@@ -37,8 +37,8 @@ const temaPadraoClaro = {
   colors: {
       background: '#CFD8DC',
       primary: '#01579B',
-      botao: '#3700B3',
-      selectedColor: '#03A9F4',
+      botao: '#0B2052',
+      selectedColor: '#FFCD00',
       // surface: '#EFEBE9',
       //     'primary-darken-1': '#3700B3',
       //     secondary: '#03DAC6',

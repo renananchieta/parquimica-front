@@ -1,16 +1,17 @@
 <template>
-    <v-navigation-drawer v-model="navBar" class="float-left" color="blue-grey-darken-4" active-color="selectedColor">
+    <v-navigation-drawer v-model="navBar" class="float-left" color="#0B2052" active-color="selectedColor">
         <v-sheet 
-          color="blue-grey-darken-4"
+          color="#0B2052"
           class="pa-4 centralizado"
           position="relative">
+            <v-img src="@/assets/logo-branca.png"/>
             <div >{{ store.usuario.nome }}</div>
         </v-sheet>
         <v-divider></v-divider>
         <Menu />
 
         <template v-slot:append>
-            <v-footer color="blue-grey-darken-4">
+            <v-footer color="#0B2052">
                 <v-btn
                   block
                   class="mx-auto"
@@ -23,7 +24,7 @@
         </template>
     </v-navigation-drawer>
 
-    <v-app-bar :elevation="2" density="compact" color="primary">
+    <v-app-bar :elevation="2" density="compact" color="#0B2052">
         <template v-slot:prepend>
             <v-app-bar-nav-icon @click="navBar = !navBar"></v-app-bar-nav-icon>
         </template>
