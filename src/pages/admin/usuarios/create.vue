@@ -135,10 +135,45 @@
                 </v-form>
             </v-card-text>
         </v-card>
+
+        <v-dialog
+        v-model="dialog"
+        max-width="550"
+        persistent
+        >
+            <v-list
+                class="py-2"
+                color="primary"
+                elevation="12"
+                rounded="lg"
+            >
+                <v-list-item
+                prepend-icon="$vuetify-outline"
+                :title="mensagem"
+                >
+                <template v-slot:prepend>
+                    <div class="pe-4">
+                        <v-icon color="primary" size="x-large"></v-icon>
+                    </div>
+                </template>
+
+                <template v-slot:append>
+                    <v-progress-circular
+                    v-show="carregando"
+                    color="primary"
+                    indeterminate="disable-shrink"
+                    size="16"
+                    width="2"
+                    ></v-progress-circular>
+                </template>
+                </v-list-item>
+            </v-list>
+        </v-dialog>
     </v-container>
 </template>
 
 <script setup>
+import Carregamento from '@/components/layouts/Carregamento.vue';
 import api from '@/plugins/api';
 import { onMounted, ref } from 'vue';
 
@@ -162,6 +197,7 @@ import { onMounted, ref } from 'vue';
 });
 const mensagem = ref('');
 const nomeUsuarioCadastrado = ref('');
+const dialog = ref(false);
 
 /**
  * Methods
@@ -172,12 +208,17 @@ const salvar = () => {
         alert('Os campos de senha não estão iguais.');
         carregando.value = false;
     } else {
+        mensagem.value = 'Aguarde...';
+        dialog.value = true;
         const perfilArray = form.value.perfil.map(id => ({ id: id }));
         const payload = { ...form.value, perfil: perfilArray };
         api.post('/admin/usuario', payload)
         .then((response) => {
-            mensagem.value = response.data.mensagem;
+            mensagem.value = response.data.message;
             nomeUsuarioCadastrado.value = response.data.usuario;
+            setTimeout(() => {
+                (dialog.value = false);
+            }, 3000);
         })
         .catch((error) => {
             console.log(error);

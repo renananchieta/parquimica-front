@@ -125,14 +125,12 @@ const ajaxLogin = async() => {
       // store.usuario.nome = response.data.nome;
       // store.usuario.codigo_usuario = response.data.codigo_usuario;
       // store.usuario.perfil = response.data.perfil;
-      console.log(store.usuario);
-
 
       abrirSessaoOuUrl("/home");
     })
     .catch((error) => {
         carregando.value = false;
-        alert(error.response.data.message);
+        alert(error.response.data);
     })
     .finally(() => {
         carregando.value = false;
