@@ -88,25 +88,30 @@
                 </v-card-text>
             </v-card>
         </v-form>
+
         <v-dialog
-          v-model="dialog"
-          :scrim="false"
-          persistent
-          width="auto"
+        v-model="dialog"
+        max-width="450"
+        persistent
         >
-            <v-card
-                color="blue"
+            <v-list
+                class="py-2"
+                color="primary"
+                elevation="12"
+                rounded="lg"
             >
-                <v-card-text>
-                {{mensagemApi}}
-                <v-progress-linear
-                    v-if="carregando"
-                    indeterminate
-                    color="white"
-                    class="mb-0"
-                ></v-progress-linear>
-                </v-card-text>
-            </v-card>
+                <v-list-item class="text-center" :title="mensagem">
+                <template v-slot:append>
+                    <v-progress-circular
+                    v-show="carregando"
+                    color="primary"
+                    indeterminate="disable-shrink"
+                    size="16"
+                    width="2"
+                    ></v-progress-circular>
+                </template>
+                </v-list-item>
+            </v-list>
         </v-dialog>
     </v-container>
 </template>
@@ -134,6 +139,7 @@ const formPerfil = ref({
 });
 const dialog = ref(false);
 const mensagemApi = ref("");
+const mensagem = ref('');
 /**
  * Methods
  */
@@ -178,11 +184,11 @@ const link = (subItem) => {
 
 const ajaxNovo = () => {
     carregando.value = true;
-    mensagemApi.value = 'Aguarde...'
+    mensagem.value = 'Aguarde...';
     dialog.value = true;
     api.post('/perfil', formPerfil.value)
     .then((response) =>{
-        mensagemApi.value = response.data.message
+        mensagem.value = response.data.message;
         setTimeout(() => {
             (dialog.value = false);
         }, 3000);

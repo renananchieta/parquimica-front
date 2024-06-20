@@ -86,6 +86,31 @@
                 </v-card-text>
             </v-card>
         </v-form>
+
+        <v-dialog
+        v-model="dialog"
+        max-width="450"
+        persistent
+        >
+            <v-list
+                class="py-2"
+                color="primary"
+                elevation="12"
+                rounded="lg"
+            >
+                <v-list-item class="text-center" :title="mensagem">
+                <template v-slot:append>
+                    <v-progress-circular
+                    v-show="carregando"
+                    color="primary"
+                    indeterminate="disable-shrink"
+                    size="16"
+                    width="2"
+                    ></v-progress-circular>
+                </template>
+                </v-list-item>
+            </v-list>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -109,7 +134,7 @@ import { useRoute } from "vue-router";
     permissoes: []
 });
 const dialog = ref(false);
-const mensagemApi = ref("");
+const mensagem = ref("");
 
 /**
  * Methods
@@ -145,11 +170,11 @@ const filtrar = (indicePai) => {
 
  const ajaxEdicao = () => {
     carregando.value = true;
-    mensagemApi.value = 'Aguarde...'
+    mensagem.value = 'Aguarde...'
     dialog.value = true;
     api.patch(`/perfil/${route.params.id}`, formPerfil.value)
     .then((response) =>{
-        mensagemApi.value = response.data.message
+        mensagem.value = response.data.message
         setTimeout(() => {
             (dialog.value = false);
         }, 3000);
