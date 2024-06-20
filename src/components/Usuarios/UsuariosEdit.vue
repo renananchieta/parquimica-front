@@ -231,8 +231,10 @@ const ajaxEditar = (formComOuSemSenha) => {
         }, 3000);
     })
     .catch((error) => {
-        console.log(error.response.data.errors);
-        alert(error);
+        mensagem.value = error.response.data.message;
+        setTimeout(() => {
+            (dialog.value = false);
+        }, 3000);
     })
     .finally(() => {
             (carregando.value = false);

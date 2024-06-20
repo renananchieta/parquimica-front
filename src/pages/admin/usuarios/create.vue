@@ -212,7 +212,10 @@ const salvar = () => {
         })
         .catch((error) => {
             console.log(error);
-            alert(error);
+            mensagem.value = error.response.data.message;
+            setTimeout(() => {
+                (dialog.value = false);
+            }, 3000);
         })
         .finally(() => {
             carregando.value = false;
