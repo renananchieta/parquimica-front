@@ -135,6 +135,31 @@
                 </v-form>
             </v-card-text>
         </v-card>
+
+        <v-dialog
+        v-model="dialog"
+        max-width="450"
+        persistent
+        >
+            <v-list
+                class="py-2"
+                color="primary"
+                elevation="12"
+                rounded="lg"
+            >
+                <v-list-item class="text-center" :title="mensagem">
+                <template v-slot:append>
+                    <v-progress-circular
+                    v-show="carregando"
+                    color="primary"
+                    indeterminate="disable-shrink"
+                    size="16"
+                    width="2"
+                    ></v-progress-circular>
+                </template>
+                </v-list-item>
+            </v-list>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -162,6 +187,8 @@ const form = ref({
     contatoWpp: '',
     perfil: null,
 });
+const mensagem = ref('');
+const dialog = ref(false);
 const isEdit = ref(false);
 const telaTitulo = ref("")
 
@@ -194,20 +221,23 @@ const getUsuario = () => {
 };
 
 const ajaxEditar = (formComOuSemSenha) => {
+    mensagem.value = 'Aguarde...';
+    dialog.value = true;
     const perfilArray = formComOuSemSenha.perfil.map(id => ({ id: id }));
-        const payload = { ...formComOuSemSenha, perfil: perfilArray };
+    const payload = { ...formComOuSemSenha, perfil: perfilArray };
     api.put(`/admin/usuario/${route.params.id}`, payload)
     .then((response) => {
-        store.mensagem = response.data.message;
+        mensagem.value = response.data.message;
+        setTimeout(() => {
+            (dialog.value = false);
+        }, 3000);
     })
     .catch((error) => {
         console.log(error.response.data.errors);
         alert(error);
     })
     .finally(() => {
-        setTimeout(() => {
-            (carregando.value = false), (store.mensagem = "");
-        }, 2500);
+            (carregando.value = false);
     })
 }
 

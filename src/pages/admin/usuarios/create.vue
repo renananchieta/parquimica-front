@@ -138,7 +138,7 @@
 
         <v-dialog
         v-model="dialog"
-        max-width="550"
+        max-width="450"
         persistent
         >
             <v-list
@@ -147,16 +147,7 @@
                 elevation="12"
                 rounded="lg"
             >
-                <v-list-item
-                prepend-icon="$vuetify-outline"
-                :title="mensagem"
-                >
-                <template v-slot:prepend>
-                    <div class="pe-4">
-                        <v-icon color="primary" size="x-large"></v-icon>
-                    </div>
-                </template>
-
+                <v-list-item class="text-center" :title="mensagem">
                 <template v-slot:append>
                     <v-progress-circular
                     v-show="carregando"
@@ -173,7 +164,6 @@
 </template>
 
 <script setup>
-import Carregamento from '@/components/layouts/Carregamento.vue';
 import api from '@/plugins/api';
 import { onMounted, ref } from 'vue';
 
@@ -222,6 +212,7 @@ const salvar = () => {
         })
         .catch((error) => {
             console.log(error);
+            alert(error);
         })
         .finally(() => {
             carregando.value = false;
