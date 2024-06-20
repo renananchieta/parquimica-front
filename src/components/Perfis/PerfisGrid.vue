@@ -18,11 +18,13 @@
                    <v-card-actions>
                        <v-spacer/>
                        <v-btn 
-                         variant="tonal"
+                         variant="elevated"
+                         color="botao"
                          :loading="carregando"
                          type="submit">Pesquisar</v-btn>
                        <v-btn
-                           variant="tonal"
+                           variant="elevated"
+                           color="botao"
                            type="buttom"
                            @click="limparFiltros">Limpar filtros</v-btn>
                    </v-card-actions>

@@ -51,16 +51,16 @@
              <v-spacer />
              <v-btn
                class="ma-1"
-               color="default"
                :loading="carregando"
                type="submit"
-               variant="tonal"
+               variant="elevated"
+               color="botao"
              >Pesquisar
              </v-btn>
              <v-btn
                class="ma-1"
-               color="default"
-               variant="tonal"
+               variant="elevated"
+               color="botao"
              >Limpar Filtros
              </v-btn>
            </v-card-actions>
