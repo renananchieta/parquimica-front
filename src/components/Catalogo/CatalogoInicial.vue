@@ -36,7 +36,6 @@ const dados = ref([]);
 const getFireBird = () => {
     api.get('catalogo-inicial') 
     .then((response) => {
-        console.log(response.data);
         dados.value = response.data;
     })   
     .catch((error) => {

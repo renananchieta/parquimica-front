@@ -133,7 +133,6 @@ const emit = defineEmits(["visualizar"]);
 const estudante = ref({});
 const viewItem = (item) => {
     // emit("visualizar", item);
-    console.log(item);
     estudante.value = item;
     dialog.value = true;
 };

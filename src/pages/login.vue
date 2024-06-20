@@ -168,7 +168,6 @@ onBeforeMount(async() => {
 
   api.get("/usuario-info", params)
   .then((response) => {
-    console.log(response.data);
     store.usuario.nome = response.data.nome;
     store.usuario.token = response.data.token;
     store.usuario.nome = response.data.nome;

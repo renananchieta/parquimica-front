@@ -197,7 +197,6 @@ const telaTitulo = ref("")
  * Methods
  */
 const getUsuario = () => {
-  console.log(route.params.id);
   carregando.value = true;
   api.get(`/admin/usuario/${route.params.id}`)
   .then((response) => {
@@ -210,7 +209,6 @@ const getUsuario = () => {
     form.value.cpf = response.data.usuario.cpf;
     form.value.perfil = response.data.perfis_usuario;
     form.value.contatoWpp = response.data.usuario.contato_wpp;
-    console.log(response.data);
   })
   .catch((error) => {
     console.log(error.data);
