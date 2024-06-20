@@ -61,6 +61,7 @@
                class="ma-1"
                variant="elevated"
                color="botao"
+               @click="limparFiltros"
              >Limpar Filtros
              </v-btn>
            </v-card-actions>
@@ -218,6 +219,11 @@
      carregando.value = false;
    }) 
  };
+
+ const limparFiltros = () => {
+   form.value.nome = "";
+   pesquisar();
+};
  
  /**
   * Hooks
