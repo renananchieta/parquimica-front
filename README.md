@@ -1,79 +1,80 @@
-# Vuetify (Default)
+# Projeto Parquimica - Front
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
+Para a intalação desse projeto é necessário a instalção das seguintes ferramentas:
+- [Node.js](https://nodejs.org/pt)
+- [yarn](https://yarnpkg.com/getting-started) 
 
-## ❗️ Important Links
+Neste Projeto estamos utilizando a biblioteca Yarn.
 
-- 📄 [Docs](https://vuetifyjs.com/)
-- 🚨 [Issues](https://issues.vuetifyjs.com/)
-- 🏬 [Store](https://store.vuetifyjs.com/)
-- 🎮 [Playground](https://play.vuetifyjs.com/)
-- 💬 [Discord](https://community.vuetifyjs.com)
+Este projeto será executado na máquina localmente, não havendo a necessidade de utilizar Docker no ambiente local.
 
-## 💿 Install
+## Instalação do projeto localmente:
+Clone o projeto em qualquer pasta da sua área de trabalho utilizando o CMD e não o powershell (caso seu sistema operacional seja Windows).
+```sh
+git clone https://github.com/renananchieta/parquimica-api.git
+```
+```sh
+cd parquimica-api/
+```
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
+Crie o arquivo .env com a seguinte configuração
+```sh
+VITE_BASE_URL=http://localhost:8000
+VITE_API_URL=http://localhost:8000/api
+VUE_APP_DEBUG=true 
+```
 
-| Package Manager                                                | Command        |
-|---------------------------------------------------------------|----------------|
-| [yarn](https://yarnpkg.com/getting-started)                   | `yarn install` |
-| [npm](https://docs.npmjs.com/cli/v7/commands/npm-install)     | `npm install`  |
-| [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
-| [bun](https://bun.sh/#getting-started)                        | `bun install`  |
-
-After completing the installation, your environment is ready for Vuetify development.
-
-## ✨ Features
-
-- 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
-- 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
-- 🚦 **Routing and Layouts**: Utilizes Vue Router for SPA navigation and vite-plugin-vue-layouts for organizing Vue file layouts. [Vue Router](https://router.vuejs.org/) | [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
-- ⚡ **Next-Gen Tooling**: Powered by Vite, experience fast cold starts and instant HMR (Hot Module Replacement). [Vite](https://vitejs.dev/)
-- 🧩 **Automated Component Importing**: Streamline your workflow with unplugin-vue-components, automatically importing components as you use them. [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
-
-These features are curated to provide a seamless development experience from setup to deployment, ensuring that your Vuetify application is both powerful and maintainable.
-
-## 💡 Usage
-
-This section covers how to start the development server and build your project for production.
-
-### Starting the Development Server
-
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
-
-```bash
+Instale o projeto
+```sh
+yarn install
+```
+Execute o projeto para rodar localmente
+```sh
 yarn dev
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+# Publicar o projeto no servidor SSH:
 
-> Add NODE_OPTIONS='--no-warnings' to suppress the JSON import warnings that happen as part of the Vuetify import mapping. If you are on Node [v21.3.0](https://nodejs.org/en/blog/release/v21.3.0) or higher, you can change this to NODE_OPTIONS='--disable-warning=5401'. If you don't mind the warning, you can remove this from your package.json dev script.
+No servidor SSH é necessário o Docker para executar a aplicação.
 
-### Building for Production
-
-To build your project for production, use:
-
-```bash
-yarn build
+Acessar o servidor com suas credenciais 
+```sh
+ssh -p 222 <usuario>@site.parquimica.com.br
+<senha>
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+Acesse a pasta raíz do projeto front
+```sh
+cd parquimica-front
+```
 
-Once the build process is completed, your application will be ready for deployment in a production environment.
+Verifique o ID do container que está executando a imagem da aplicação
+```sh
+docker ps
+```
 
-## 💪 Support Vuetify Development
+A imagem da aplicação estará como neste exemplo
+```sh
+CONTAINER ID   IMAGE            COMMAND                  CREATED       STATUS       PORTS                                                  NAMES
+91c3a0905058   vuejs-app        "/docker-entrypoint.…"   8 hours ago   Up 8 hours   0.0.0.0:8080->80/tcp, :::8080->80/tcp                  vuejs-app-1
+```
 
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
+Pare o container da aplicação com o name vuejs-app-1, utilizando o CONTAINER ID em questão. Os IDs dos containers mudam conforme são reiniciados.
+```sh
+docker stop 91c
+```
 
-- [Requesting Enterprise Support](https://support.vuetifyjs.com/)
-- [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
-- [Sponsoring Kael on Github](https://github.com/users/kaelwd/sponsorship)
-- [Supporting the team on Open Collective](https://opencollective.com/vuetify)
-- [Becoming a sponsor on Patreon](https://www.patreon.com/vuetify)
-- [Becoming a subscriber on Tidelift](https://tidelift.com/subscription/npm/vuetify)
-- [Making a one-time donation with Paypal](https://paypal.me/vuetify)
+Após realizar as alterações necessárias no ambiente local e publicar na branch principal, atualize o projeto no servidor SSH
+```sh
+git pull origin main
+```
 
-## 📑 License
-[MIT](http://opensource.org/licenses/MIT)
+Para executar o build do projeto via Docker
+```sh
+docker build -t vuejs-app .
+```
 
-Copyright (c) 2016-present Vuetify, LLC
+Executar o build da aplicação e expondo a porta 8080
+```sh
+docker run -it -p 8080:80 --rm --name vuejs-app-1 vuejs-app
+```
