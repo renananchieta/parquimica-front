@@ -54,10 +54,10 @@ import { onMounted, ref } from 'vue';
  * Data
  */
 const headers = ref([
-    {title: "id", key:"ID"},
-    {title: "Produto", key:"NOME"},
-    {title: "Abreviação", key:"EMB_ABREVIADA"},
-    {title: "Valor (R$)", key:"PRECO"},
+    {title: "id", key:"id"},
+    {title: "Produto", key:"nome"},
+    {title: "Abreviação", key:"emb_abreviada"},
+    {title: "Valor (R$)", key:"preco"},
 ]);
 const dados = ref([]);
 const carregando = ref(false);
