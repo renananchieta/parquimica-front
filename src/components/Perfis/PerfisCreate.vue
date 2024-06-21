@@ -26,12 +26,12 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <v-autocomplete 
+                                    <!-- <v-autocomplete 
                                     label="Grupo"
                                     v-model="grupo"
                                     :items="grupos"
                                     variant="outlined"
-                                    density="compact"/>
+                                    density="compact"/> -->
                                 </th>
                                 <th v-if="isUsuarioAdmin">Dependências</th>
                                 <th>Permissão</th>
