@@ -203,7 +203,7 @@ const salvar = () => {
         })
         .catch((error) => {
             console.log(error);
-            mensagem.value = error.response.data.message;
+            mensagem.value = error.response.data.erro;
             setTimeout(() => {
                 (dialog.value = false);
             }, 3000);
