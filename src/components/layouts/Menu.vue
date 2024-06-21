@@ -67,6 +67,12 @@ const items = ([
         "children": [],
     },
     { 
+        "title": 'Minha conta', 
+        "icon": 'mdi mdi-view-list', 
+        "to": "/minha-conta",
+        "children": [],
+    },
+    { 
         "title": 'Administrador', 
         "icon": 'mdi mdi-security',
         "to": "",
