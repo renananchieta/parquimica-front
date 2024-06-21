@@ -1,5 +1,36 @@
 <template>
     <v-container>
+        <v-card class="mb-4">
+            <v-card-title>Pesquisar Produtos</v-card-title>
+            <v-divider class="ml-4 mr-4 mb-2"/>
+            <v-card-text>
+                <v-form @submit.prevent="pesquisar()">
+                   <v-row>
+                       <v-col>
+                           <v-text-field
+                           label="Nome"
+                           v-model="form.nome"
+                           density="compact"
+                           variant="outlined"/>
+                       </v-col>
+                   </v-row>
+                   <v-divider class="mb-2"/>
+                   <v-card-actions>
+                       <v-spacer/>
+                       <v-btn 
+                         variant="elevated"
+                         color="botao"
+                         :loading="carregando"
+                         type="submit">Pesquisar</v-btn>
+                       <v-btn
+                           variant="elevated"
+                           color="botao"
+                           type="buttom"
+                           @click="limparFiltros">Limpar filtros</v-btn>
+                   </v-card-actions>
+                </v-form>
+            </v-card-text>
+        </v-card>
         <v-card>
             <v-card-title>Catálogo</v-card-title>
             <v-card-subtitle>Catálogo de produtos</v-card-subtitle>
@@ -17,7 +48,7 @@
 
 <script setup>
 import api from '@/plugins/api';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 /**
  * Data
@@ -29,12 +60,16 @@ const headers = ref([
     {title: "Valor (R$)", key:"PRECO"},
 ]);
 const dados = ref([]);
+const carregando = ref(false);
+const form = ref({
+   nome: ""
+});
 
 /**
  * Methods
  */
-const getFireBird = () => {
-    api.get('catalogo-inicial') 
+const pesquisar = () => {
+    api.get('/catalogo-inicial', form.value) 
     .then((response) => {
         dados.value = response.data;
     })   
@@ -43,11 +78,16 @@ const getFireBird = () => {
     })
 }
 
+const limparFiltros = () => {
+   form.value.nome = "";
+//    pesquisar();
+};
+
 /**
  * Hooks
  */
 onMounted(() => {
-    getFireBird();
+    pesquisar();
 })
 
 </script>
