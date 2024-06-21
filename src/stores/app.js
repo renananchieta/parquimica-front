@@ -7,8 +7,6 @@ export const useAppStore = defineStore('app', {
       id: 0,
       nome: '',
       perfil: [],
-      codigo_usuario: '',
-      codigo_pessoa: '',
       token: '',
     },
     mensagens: '',

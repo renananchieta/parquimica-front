@@ -51,7 +51,9 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { useAppStore } from '@/stores/app';
 
+const store = useAppStore();
 const router = useRouter();
 const items = ([
     { 
@@ -68,7 +70,7 @@ const items = ([
     },
     { 
         "title": 'Minha conta', 
-        "icon": 'mdi mdi-view-list', 
+        "icon": 'mdi mdi-account-lock-open', 
         "to": "/minha-conta",
         "children": [],
     },

@@ -55,7 +55,7 @@
                               density="compact"
                               v-mask="'(##) #####-####'"/>
                         </v-col>
-                        <v-col cols="12" md="6">
+                        <!-- <v-col cols="12" md="6">
                             <v-autocomplete
                               v-model="form.perfil"
                               label="Perfil *"
@@ -68,10 +68,7 @@
                               variant="outlined"
                               density="compact"
                               />
-                        </v-col>
-                    </v-row>
-                    
-                    <v-row>
+                        </v-col> -->
                         <v-col cols="12" md="6">
                             <v-text-field
                               v-model="form.email"
@@ -80,6 +77,9 @@
                               variant="outlined"
                               density="compact"/>
                         </v-col>
+                    </v-row>
+                    
+                    <v-row>
 
                         <v-col cols="12" md="3">
                             <v-text-field 
@@ -178,7 +178,6 @@ const form = ref({
     cpf: '',
     contato: '',
     contatoWpp: '',
-    perfil: null,
 });
 const mensagem = ref('');
 const dialog = ref(false);
@@ -200,7 +199,6 @@ const getUsuario = () => {
     form.value.email = response.data.usuario.email;
     form.value.dtNascimento= response.data.usuario.dt_nascimento;
     form.value.cpf = response.data.usuario.cpf;
-    form.value.perfil = response.data.perfis_usuario;
     form.value.contatoWpp = response.data.usuario.contato_wpp;
   })
   .catch((error) => {
@@ -214,9 +212,7 @@ const getUsuario = () => {
 const ajaxEditar = (formComOuSemSenha) => {
     mensagem.value = 'Aguarde...';
     dialog.value = true;
-    const perfilArray = formComOuSemSenha.perfil.map(id => ({ id: id }));
-    const payload = { ...formComOuSemSenha, perfil: perfilArray };
-    api.put(`/admin/usuario/${form.value.id}`, payload)
+    api.put(`/admin/usuario/${form.value.id}/dados-pessoais`, form.value)
     .then((response) => {
         mensagem.value = response.data.message;
         setTimeout(() => {

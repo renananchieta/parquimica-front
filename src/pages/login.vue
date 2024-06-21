@@ -119,12 +119,6 @@ const ajaxLogin = async() => {
     .then((response) => {
       store.usuario = response.data;
       localStorage.setItem('Authorization', store.usuario.token);
-      localStorage.setItem('user', response.data);
-      
-      // store.usuario.token = response.data.token;
-      // store.usuario.nome = response.data.nome;
-      // store.usuario.codigo_usuario = response.data.codigo_usuario;
-      // store.usuario.perfil = response.data.perfil;
 
       abrirSessaoOuUrl("/home");
     })
@@ -168,12 +162,7 @@ onBeforeMount(async() => {
 
   api.get("/usuario-info", params)
   .then((response) => {
-    store.usuario.id = response.data.id;
-    store.usuario.nome = response.data.nome;
-    store.usuario.token = response.data.token;
-    store.usuario.nome = response.data.nome;
-    store.usuario.codigo_usuario = response.data.codigo_usuario;
-    store.usuario.perfil = response.data.perfil;
+    store.usuario = response.data;
     abrirSessaoOuUrl("/home")
   })
   .catch((erro) => {
