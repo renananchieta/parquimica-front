@@ -78,6 +78,46 @@ const pesquisar = () => {
     })
 }
 
+const catalogoIndex = () => {
+    api.get('/catalogo', form.value) 
+    .then((response) => {
+        console.log(response.data);
+    })   
+    .catch((error) => {
+        console.log(error);
+    })
+}
+
+const catalogoGrid = () => {
+    api.get('/catalogo/grid', form.value) 
+    .then((response) => {
+        console.log(response.data);
+    })   
+    .catch((error) => {
+        console.log(error);
+    })
+}
+
+const catalogoGrid2 = () => {
+    api.get('/catalogo/grid-2', form.value) 
+    .then((response) => {
+        console.log(response.data);
+    })   
+    .catch((error) => {
+        console.log(error);
+    })
+}
+
+const catalogoConsultaExtensa = () => {
+    api.get('/catalogo/grid-2', form.value) 
+    .then((response) => {
+        console.log(response.data);
+    })   
+    .catch((error) => {
+        console.log(error);
+    })
+}
+
 const limparFiltros = () => {
    form.value.nome = "";
 //    pesquisar();
@@ -88,6 +128,10 @@ const limparFiltros = () => {
  */
 onMounted(() => {
     pesquisar();
+    catalogoIndex();
+    catalogoGrid();
+    catalogoGrid2();
+    catalogoConsultaExtensa();
 })
 
 </script>
