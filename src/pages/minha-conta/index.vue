@@ -216,7 +216,7 @@ const ajaxEditar = (formComOuSemSenha) => {
     dialog.value = true;
     const perfilArray = formComOuSemSenha.perfil.map(id => ({ id: id }));
     const payload = { ...formComOuSemSenha, perfil: perfilArray };
-    api.put(`/admin/usuario/${route.params.id}`, payload)
+    api.put(`/admin/usuario/${form.value.id}`, payload)
     .then((response) => {
         mensagem.value = response.data.message;
         setTimeout(() => {
