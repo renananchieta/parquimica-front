@@ -78,28 +78,8 @@ const pesquisar = () => {
     })
 }
 
-const catalogoIndex = () => {
-    api.get('/catalogo', form.value) 
-    .then((response) => {
-        console.log(response.data);
-    })   
-    .catch((error) => {
-        console.log(error);
-    })
-}
-
 const catalogoGrid = () => {
     api.get('/catalogo/grid', form.value) 
-    .then((response) => {
-        console.log(response.data);
-    })   
-    .catch((error) => {
-        console.log(error);
-    })
-}
-
-const catalogoGrid2 = () => {
-    api.get('/catalogo/grid-2', form.value) 
     .then((response) => {
         console.log(response.data);
     })   
@@ -128,9 +108,7 @@ const limparFiltros = () => {
  */
 onMounted(() => {
     pesquisar();
-    catalogoIndex();
     catalogoGrid();
-    catalogoGrid2();
     catalogoConsultaExtensa();
 })
 
