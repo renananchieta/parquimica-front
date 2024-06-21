@@ -4,7 +4,7 @@
             <v-card-title>Pesquisar Produtos</v-card-title>
             <v-divider class="ml-4 mr-4 mb-2"/>
             <v-card-text>
-                <v-form @submit.prevent="pesquisar()">
+                <v-form @submit.prevent="catalogoGrid()">
                    <v-row>
                        <v-col>
                            <v-text-field
