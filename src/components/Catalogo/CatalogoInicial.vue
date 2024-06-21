@@ -81,6 +81,7 @@ const pesquisar = () => {
 const catalogoGrid = () => {
     api.get('/catalogo/grid', form.value) 
     .then((response) => {
+        console.log(form.value);
         console.log(response.data);
     })   
     .catch((error) => {
@@ -109,7 +110,7 @@ const limparFiltros = () => {
 onMounted(() => {
     pesquisar();
     catalogoGrid();
-    catalogoConsultaExtensa();
+    // catalogoConsultaExtensa();
 })
 
 </script>
