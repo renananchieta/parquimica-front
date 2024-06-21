@@ -109,7 +109,7 @@ const catalogoGrid2 = () => {
 }
 
 const catalogoConsultaExtensa = () => {
-    api.get('/catalogo/grid-2', form.value) 
+    api.get('/catalogo/consulta-extensa', form.value) 
     .then((response) => {
         console.log(response.data);
     })   
