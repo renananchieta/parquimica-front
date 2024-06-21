@@ -79,7 +79,12 @@ const pesquisar = () => {
 }
 
 const catalogoGrid = () => {
-    api.get('/catalogo/grid', form.value) 
+    let params = {
+        params:{
+            nome: form.value.nome
+        }
+    }
+    api.get('/catalogo/grid', params) 
     .then((response) => {
         console.log(form.value);
         console.log(response.data);
