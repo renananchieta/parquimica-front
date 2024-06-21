@@ -68,15 +68,6 @@ const form = ref({
 /**
  * Methods
  */
-const pesquisar = () => {
-    api.get('/catalogo-inicial', form.value) 
-    .then((response) => {
-        dados.value = response.data;
-    })   
-    .catch((error) => {
-        console.log(error);
-    })
-}
 
 const catalogoGrid = () => {
     let params = {
@@ -86,18 +77,7 @@ const catalogoGrid = () => {
     }
     api.get('/catalogo/grid', params) 
     .then((response) => {
-        console.log(form.value);
-        console.log(response.data);
-    })   
-    .catch((error) => {
-        console.log(error);
-    })
-}
-
-const catalogoConsultaExtensa = () => {
-    api.get('/catalogo/consulta-extensa', form.value) 
-    .then((response) => {
-        console.log(response.data);
+        dados.value = response.data;
     })   
     .catch((error) => {
         console.log(error);
@@ -113,9 +93,7 @@ const limparFiltros = () => {
  * Hooks
  */
 onMounted(() => {
-    pesquisar();
     catalogoGrid();
-    // catalogoConsultaExtensa();
 })
 
 </script>
