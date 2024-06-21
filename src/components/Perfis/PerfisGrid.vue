@@ -124,7 +124,6 @@ const abrirRotaMenu = (item, id) => {
 
 const itemsMenu = [
  { title: "Editar", action: abrirRotaMenu, icone: "mdi mdi-pencil" },
- { title: "Visualizar", action: abrirRotaMenu, icone: "mdi mdi-eye-outline" },
  { title: "Excluir", action: abrirRotaMenu, icone: "mdi mdi-delete" },
 ];
 

@@ -17,53 +17,44 @@
                         </v-col>
                         <v-col cols="12" md="6">
                             <v-text-field
-                              v-model="form.nomeSocial"
-                              label="Nome social"
+                              v-model="form.cpf"
+                              label="CPF *"
+                              placeholder="000.000.000-00"
                               variant="outlined"
                               density="compact"
-                              />
+                              v-mask="'###.###.###-##'"/>
                         </v-col>
                     </v-row>
                     
                     <v-row>
-                        <v-col cols="12" md="6">
-                            <v-text-field
-                              v-model="form.cpf"
-                              label="CPF *"
-                              variant="outlined"
-                              density="compact"
-                              />
-                        </v-col>
-
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="2">
                             <v-text-field
                               v-model="form.dtNascimento"
                               label="Data de nascimento *"
                               type="date"
                               variant="outlined"
-                              density="compact"/>
+                              density="compact"
+                              />
                         </v-col>
-                    </v-row>
-
-                    <v-row>
-                        <v-col cols="12" md="3">
+                        <v-col cols="12" md="2">
                             <v-text-field 
                               v-model="form.contato"
                               label="Contado"
+                              placeholder="(91) 99191-9191"
                               variant="outlined"
                               density="compact"
+                              v-mask="'(##) #####-####'"
                               />
                         </v-col>
-
-                        <v-col cols="12" md="3">
+                        <v-col cols="12" md="2">
                             <v-text-field 
                               v-model="form.contatoWpp"
                               label="Contato Wpp *"
+                              placeholder="(91) 99191-9191"
                               variant="outlined"
                               density="compact"
-                              />
+                              v-mask="'(##) #####-####'"/>
                         </v-col>
-
                         <v-col cols="12" md="6">
                             <v-autocomplete
                               v-model="form.perfil"
@@ -85,9 +76,9 @@
                             <v-text-field
                               v-model="form.email"
                               label="E-mail *"
+                              placeholder="exemplo123@gmail.com"
                               variant="outlined"
-                              density="compact"
-                              />
+                              density="compact"/>
                         </v-col>
 
                         <v-col cols="12" md="3">
