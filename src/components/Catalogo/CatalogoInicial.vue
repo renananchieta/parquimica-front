@@ -104,7 +104,17 @@ const exportarCSV = () => {
         const url = window.URL.createObjectURL(new Blob([response.data], { type: 'text/csv' }));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'produtos.csv'); // Nome do arquivo para download
+        const contentDisposition = response.headers['content-disposition'];
+        let fileName = 'produtos.csv'; // Nome padrão do arquivo
+        
+        if (contentDisposition) {
+            const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+            if (fileNameMatch.length === 2) {
+                fileName = fileNameMatch[1];
+            }
+        }
+        
+        link.setAttribute('download', fileName); // Nome do arquivo para download
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
