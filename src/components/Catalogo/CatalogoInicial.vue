@@ -99,12 +99,12 @@ const limparFiltros = () => {
 
 const exportarCSV = () => {
     carregando.value = true;
-    api.get('/catalogo/grid/exportar-csv', { responseType: 'blob' }) 
+    api.get('/catalogo/grid/exportar-csv', { responseType: 'blob' })
     .then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const url = window.URL.createObjectURL(new Blob([response.data], { type: 'text/csv' }));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'produtos.csv');
+        link.setAttribute('download', response.headers['content-disposition'].split('filename=')[1].replace(/"/g, ''));
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
