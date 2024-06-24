@@ -33,7 +33,15 @@
         </v-card>
         <v-card>
             <v-card-title>Catálogo</v-card-title>
-            <v-card-subtitle>Catálogo de produtos</v-card-subtitle>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn 
+                variant="elevated"
+                class="mt-n14 mr-4"
+                color="botao"
+                :loading="carregando"
+                @click="exportarCSV()">Exportar CSV</v-btn>
+            </v-card-actions>
             <v-card-text>
                 <v-data-table
                   :headers="headers"
@@ -88,6 +96,20 @@ const limparFiltros = () => {
    form.value.nome = "";
 //    pesquisar();
 };
+
+const exportarCSV = () => {
+    carregando.value = true;
+    api.get('/catalogo/grid/exportar-csv')
+    .then((response) => {
+        console.log(response.data);
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+    .finally(() => {
+        carregando.value = false
+    })
+}
 
 /**
  * Hooks
