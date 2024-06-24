@@ -99,22 +99,12 @@ const limparFiltros = () => {
 
 const exportarCSV = () => {
     carregando.value = true;
-    api.get('/catalogo/grid/exportar-csv', { responseType: 'blob' }) // Defina o tipo de resposta como 'blob'
+    api.get('/catalogo/grid/exportar-csv', { responseType: 'blob' }) 
     .then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data], { type: 'text/csv' }));
+        const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        const contentDisposition = response.headers['content-disposition'];
-        let fileName = 'produtos.csv'; // Nome padrão do arquivo
-        
-        if (contentDisposition) {
-            const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
-            if (fileNameMatch.length === 2) {
-                fileName = fileNameMatch[1];
-            }
-        }
-        
-        link.setAttribute('download', fileName); // Nome do arquivo para download
+        link.setAttribute('download', 'produtos.csv');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
