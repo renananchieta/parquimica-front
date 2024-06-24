@@ -99,16 +99,22 @@ const limparFiltros = () => {
 
 const exportarCSV = () => {
     carregando.value = true;
-    api.get('/catalogo/grid/exportar-csv')
+    api.get('/catalogo/grid/exportar-csv', { responseType: 'blob' }) // Defina o tipo de resposta como 'blob'
     .then((response) => {
-        console.log(response.data);
+        const url = window.URL.createObjectURL(new Blob([response.data], { type: 'text/csv' }));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'produtos.csv'); // Nome do arquivo para download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     })
     .catch((error) => {
         console.log(error);
     })
     .finally(() => {
-        carregando.value = false
-    })
+        carregando.value = false;
+    });
 }
 
 /**
