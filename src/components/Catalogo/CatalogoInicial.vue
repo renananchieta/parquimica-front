@@ -6,10 +6,30 @@
             <v-card-text>
                 <v-form @submit.prevent="catalogoGrid()">
                    <v-row>
-                       <v-col>
+                       <v-col cols="12" md="4">
                            <v-text-field
-                           label="Nome"
+                           label="Nome do produto"
                            v-model="form.nome"
+                           density="compact"
+                           variant="outlined"/>
+                       </v-col>
+                       <v-col cols="12" md="4">
+                           <v-autocomplete
+                           label="Linha do produto"
+                           v-model="form.linhaId"
+                           :items="comboLinhas"
+                           item-title="DESCRICAO"
+                           item-value="ID"
+                           density="compact"
+                           variant="outlined"/>
+                       </v-col>
+                       <v-col cols="12" md="4">
+                           <v-autocomplete
+                           label="Função do produto"
+                           v-model="form.funcaoId"
+                           :items="comboFuncoes"
+                           item-title="DESCRICAO"
+                           item-value="ID"
                            density="compact"
                            variant="outlined"/>
                        </v-col>
@@ -70,8 +90,12 @@ const headers = ref([
 const dados = ref([]);
 const carregando = ref(false);
 const form = ref({
-   nome: ""
+  nome: '',
+  linhaId: '',
+  funcaoId: '',
 });
+const comboLinhas = ref([]);
+const comboFuncoes = ref([]);
 
 /**
  * Methods
@@ -80,7 +104,9 @@ const form = ref({
 const catalogoGrid = () => {
     let params = {
         params:{
-            nome: form.value.nome
+          nomeProduto: form.value.nome,
+          linhaId: form.value.linhaId,
+          funcaoId: form.value.funcaoId
         }
     }
     api.get('/catalogo/grid', params) 
@@ -90,6 +116,34 @@ const catalogoGrid = () => {
     .catch((error) => {
         console.log(error);
     })
+}
+
+const getLinhaProdutos = () => {
+  carregando.value = true;
+  api.get('/firebird/linhas')
+  .then((response) => {
+    comboLinhas.value = response.data;
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+  .finally(() =>{
+    carregando.value = false;
+  })
+}
+
+const getFuncaoProdutos = () => {
+  carregando.value = true;
+  api.get('/firebird/funcao')
+  .then((response) => {
+    comboFuncao.value = response.data;
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+  .finally(() =>{
+    carregando.value = false;
+  })
 }
 
 const limparFiltros = () => {
@@ -146,31 +200,13 @@ function exportData(format) {
   }
 }
 
-// const exportarCSV = () => {
-//     carregando.value = true;
-//     api.get('/catalogo/grid/exportar-csv', { responseType: 'blob' })
-//     .then((response) => {
-//         const url = window.URL.createObjectURL(new Blob([response.data]));
-//         const link = document.createElement('a');
-//         link.href = url;
-//         link.setAttribute('download', 'produtos.csv');
-//         document.body.appendChild(link);
-//         link.click();
-//         link.parentNode.removeChild(link);
-//     })
-//     .catch((error) => {
-//         console.log(error);
-//     })
-//     .finally(() => {
-//         carregando.value = false;
-//     });
-// }
-
 /**
  * Hooks
  */
 onMounted(() => {
     catalogoGrid();
+    getLinhaProdutos();
+    getFuncaoProdutos
 })
 
 </script>
