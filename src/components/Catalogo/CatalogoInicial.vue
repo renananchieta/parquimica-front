@@ -134,7 +134,7 @@ const getLinhaProdutos = () => {
 
 const getFuncaoProdutos = () => {
   carregando.value = true;
-  api.get('/firebird/funcao')
+  api.get('/firebird/funcoes')
   .then((response) => {
     comboFuncao.value = response.data;
   })
