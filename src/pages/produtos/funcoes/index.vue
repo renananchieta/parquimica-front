@@ -1,5 +1,5 @@
 <template>
-    <FuncoesHome />
+    
 </template>
 
 <script setup>
