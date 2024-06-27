@@ -66,6 +66,7 @@
             </v-card-actions>
             <v-card-text>
                 <v-data-table
+                  :group-by="groupBy"
                   :headers="headers"
                   :items="dados"
                   hover
@@ -79,16 +80,19 @@
 
 <script setup>
 import api from '@/plugins/api';
+import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
 /**
  * Data
  */
+const groupBy = ([{key:"nome", order: "asc"}]);
 const headers = ref([
-    {title: "id", key:"id"},
-    {title: "Produto", key:"nome"},
-    {title: "Abreviação", key:"emb_abreviada"},
-    {title: "Valor (R$)", key:"preco"},
+    // {title: "id", key:"id"},
+    // {title: "Produto", key:"nome"},
+    {title: "Embalagem", align:"start", key:"embalagem"},
+    {title: "Embalagem Abreviada", align:"start", key:"emb_abreviada"},
+    {title: "Valor (R$)", align:"left", key:"preco"},
 ]);
 const dados = ref([]);
 const carregando = ref(false);
@@ -113,7 +117,8 @@ const catalogoGrid = () => {
           funcaoId: form.value.funcaoId
         }
     }
-    api.get('/catalogo/grid', params) 
+    // api.get('/catalogo/grid', params) 
+    api.get('/catalogo/grid', params)
     .then((response) => {
         dados.value = response.data;
     })   
