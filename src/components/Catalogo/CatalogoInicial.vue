@@ -136,7 +136,7 @@ const getFuncaoProdutos = () => {
   carregando.value = true;
   api.get('/firebird/funcoes')
   .then((response) => {
-    comboFuncao.value = response.data;
+    comboFuncoes.value = response.data;
   })
   .catch((error) => {
     console.log(error);
