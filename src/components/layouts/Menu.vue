@@ -69,6 +69,37 @@ const items = ([
         "children": [],
     },
     { 
+        "title": 'Linhas', 
+        "icon": 'mdi mdi-arrow-decision-outline', 
+        "to": "/linhas",
+        "children": [],
+    },
+    { 
+        "title": 'Funções', 
+        "icon": 'mdi mdi-backburger', 
+        "to": "/funcoes",
+        "children": [],
+    },
+    { 
+        "title": 'Produtos', 
+        "icon": 'mdi mdi-beaker', 
+        "to": "/",
+        "children": [
+          { 
+            "title": 'Linhas de Produtos', 
+            "icon": 'mdi mdi-view-list', 
+            "to": "/produtos/linhas",
+            "children": [],
+          },
+          { 
+            "title": 'Funções de Produtos', 
+            "icon": 'mdi mdi-view-list', 
+            "to": "/produtos/funcoes",
+            "children": [],
+          },
+        ],
+    },
+    { 
         "title": 'Minha conta', 
         "icon": 'mdi mdi-account-lock-open', 
         "to": "/minha-conta",

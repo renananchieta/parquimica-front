@@ -11,7 +11,7 @@
             class="text-capitalize"
             density="default"
             variant="elevated"
-            color="primary"
+            color="botao"
             @click="enviarDadosPequisa"
             :loading="carregando">
                 <v-icon left> mdi-magnify </v-icon>
