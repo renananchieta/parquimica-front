@@ -206,7 +206,7 @@ function exportData(format) {
 onMounted(() => {
     catalogoGrid();
     getLinhaProdutos();
-    getFuncaoProdutos
+    getFuncaoProdutos();
 })
 
 </script>
