@@ -21,7 +21,8 @@
                            item-title="DESCRICAO"
                            item-value="ID"
                            density="compact"
-                           variant="outlined"/>
+                           variant="outlined"
+                           :loading="carregando"/>
                        </v-col>
                        <v-col cols="12" md="4">
                            <v-autocomplete
@@ -31,7 +32,8 @@
                            item-title="DESCRICAO"
                            item-value="ID"
                            density="compact"
-                           variant="outlined"/>
+                           variant="outlined"
+                           :loading="carregando"/>
                        </v-col>
                    </v-row>
                    <v-divider class="mb-2"/>
@@ -68,6 +70,7 @@
                   :items="dados"
                   hover
                   items-per-page-text="Itens por página"
+                  :loading="carregando"
                 />
             </v-card-text>
         </v-card>    
@@ -102,6 +105,7 @@ const comboFuncoes = ref([]);
  */
 
 const catalogoGrid = () => {
+  carregando.value = true;
     let params = {
         params:{
           nomeProduto: form.value.nome,
@@ -115,6 +119,9 @@ const catalogoGrid = () => {
     })   
     .catch((error) => {
         console.log(error);
+    })
+    .finally(() => {
+      carregando.value = false;
     })
 }
 
