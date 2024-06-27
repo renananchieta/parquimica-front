@@ -27,7 +27,7 @@
 
 <script setup>
 import api from '@/plugins/api';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 
 /**
@@ -61,4 +61,11 @@ const pesquisar = () => {
       carregando.value = false;
     })
 }
+
+/**
+ * Hooks
+ */
+onMounted(() =>{
+    pesquisar();
+})
 </script>

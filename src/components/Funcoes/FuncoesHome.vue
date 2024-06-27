@@ -61,4 +61,11 @@ const pesquisar = () => {
       carregando.value = false;
     })
 }
+
+/**
+ * Hooks
+ */
+ onMounted(() =>{
+    pesquisar();
+})
 </script>
