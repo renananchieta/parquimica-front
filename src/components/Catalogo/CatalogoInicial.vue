@@ -186,7 +186,7 @@ const limparFiltros = () => {
 const viewItem = (item) => {
   let parametros = {
     imprime_literatura: 'true',
-    codigo_produto: id
+    codigo_produto: item.id
   }
   console.log(parametros);
   api.get(`/impressao/${item.id}`, {params: parametros, responseType: 'blob'})
