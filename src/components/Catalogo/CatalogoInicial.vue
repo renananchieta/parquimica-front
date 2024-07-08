@@ -73,12 +73,7 @@
                 items-per-page-text="Itens por página"
                 :loading="carregando">
                   <template v-slot:item.actions="{ item }">
-                    <v-icon
-                      class="me-2"
-                      @click="viewItem(item)"
-                    >
-                      mdi mdi-file-pdf-box
-                    </v-icon>
+                    <v-icon @click="viewItem(item)">mdi mdi-file-pdf-box</v-icon>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -101,7 +96,7 @@ const headers = ref([
     {title: "Embalagem", align:"start", key:"embalagem"},
     {title: "Embalagem Abreviada", align:"start", key:"emb_abreviada"},
     {title: "Valor (R$)", align:"left", key:"preco"},
-    {title: "Literatura", align:"left", key:"actions"},
+    {title: "Literatura", align:"end", key:"actions"},
 ]);
 const dados = ref([]);
 const carregando = ref(false);
@@ -173,7 +168,8 @@ const limparFiltros = () => {
 };
 
 const viewItem = (item) => {
-  console.log(item);
+  console.log('item: ' +item);
+  console.log('item id: ' + item.id);
 }
 
 function jsonToCsv(json) {
