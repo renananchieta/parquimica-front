@@ -107,6 +107,7 @@ const form = ref({
 });
 const comboLinhas = ref([]);
 const comboFuncoes = ref([]);
+const literaturaItem = ref([]);
 
 /**
  * Methods
@@ -170,6 +171,17 @@ const limparFiltros = () => {
 const viewItem = (item) => {
   console.log(item);
   console.log('item id: ' + item.id);
+
+  api.get(`/firebird/literatura/${item.id}`)
+  .then((response) => {
+    literaturaItem.value = response.data;
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+  .finally(() =>{
+    carregando.value = false;
+  })
 }
 
 function jsonToCsv(json) {
