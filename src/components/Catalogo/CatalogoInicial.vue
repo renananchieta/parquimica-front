@@ -102,7 +102,7 @@ const headers = ref([
     {title: "Embalagem", align:"start", key:"embalagem"},
     {title: "Embalagem Abreviada", align:"start", key:"emb_abreviada"},
     {title: "Valor (R$)", align:"left", key:"preco"},
-    {title: "Literatura", align:"left", key:"literatura"},
+    {title: "Literatura", align:"left", key:"action"},
 ]);
 const dados = ref([]);
 const carregando = ref(false);
