@@ -75,7 +75,6 @@
                   <template v-slot:item.actions="{ item }">
                     <v-icon
                       class="me-2"
-                      size="small"
                       @click="viewItem(item)"
                     >
                       mdi mdi-file-pdf-box
