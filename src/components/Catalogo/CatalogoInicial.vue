@@ -190,7 +190,6 @@ const viewItem = (item) => {
   }
   api.get('/impressao', {params: parametros, responseType: 'blob'})
   .then((response) => {
-    console.log(response.data);
     let fileURL = URL.createObjectURL(response.data);
     window.open(fileURL);
   })
