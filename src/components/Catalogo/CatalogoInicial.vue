@@ -65,14 +65,23 @@
                 @click="exportData('csv')">Exportar CSV</v-btn>
             </v-card-actions>
             <v-card-text>
-                <v-data-table
-                  :group-by="groupBy"
-                  :headers="headers"
-                  :items="dados"
-                  hover
-                  items-per-page-text="Itens por página"
-                  :loading="carregando"
-                />
+              <v-data-table
+                :group-by="groupBy"
+                :headers="headers"
+                :items="dados"
+                hover
+                items-per-page-text="Itens por página"
+                :loading="carregando">
+                  <template v-slot:item.actions="{ item }">
+                    <v-icon
+                      class="me-2"
+                      size="small"
+                      @click="viewItem(item)"
+                    >
+                      mdi mdi-file-pdf-box
+                    </v-icon>
+                </template>
+              </v-data-table>
             </v-card-text>
         </v-card>    
     </v-container>
@@ -164,6 +173,10 @@ const limparFiltros = () => {
 //    pesquisar();
 };
 
+const viewItem = (item) => {
+  console.log(item);
+}
+
 function jsonToCsv(json) {
   if (json.length === 0) return '';
   const keys = Object.keys(json[0]);
@@ -212,6 +225,8 @@ function exportData(format) {
     doc.save('products_data.pdf');
   }
 }
+
+
 
 /**
  * Hooks
