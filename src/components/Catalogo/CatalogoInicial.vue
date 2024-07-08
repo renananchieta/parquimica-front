@@ -168,7 +168,7 @@ const limparFiltros = () => {
 };
 
 const viewItem = (item) => {
-  console.log('item: ' + item.raw);
+  console.log(item);
   console.log('item id: ' + item.id);
 }
 
