@@ -188,6 +188,7 @@ const viewItem = (item) => {
     imprime_literatura: 'true',
     codigo_produto: item.id
   }
+  console.log(parametros);
   api.get('/impressao', {params: parametros, responseType: 'blob'})
   .then((response) => {
     console.log(response.data);
