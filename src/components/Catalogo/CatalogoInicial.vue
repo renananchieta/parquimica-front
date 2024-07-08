@@ -168,19 +168,30 @@ const limparFiltros = () => {
 //    pesquisar();
 };
 
-const viewItem = (item) => {
-  console.log(item);
-  console.log('item id: ' + item.id);
+// const viewItem = (item) => {
+//   console.log(item);
+//   console.log('item id: ' + item.id);
 
-  api.get(`/firebird/literatura/${item.id}`)
+//   api.get(`/firebird/literatura/${item.id}`)
+//   .then((response) => {
+//     literaturaItem.value = response.data;
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   })
+//   .finally(() =>{
+//     carregando.value = false;
+//   })
+// }
+const viewItem = (item) => {
+  let parametros = {
+    imprime_literatura: 'true',
+    codigo_produto: item.id
+  }
+  api.get('/impressao', {params: parametros, responseType: 'blob'})
   .then((response) => {
-    literaturaItem.value = response.data;
-  })
-  .catch((error) => {
-    console.log(error);
-  })
-  .finally(() =>{
-    carregando.value = false;
+    let fileURL = URL.createObjectURL(response.data);
+    window.open(fileURL);
   })
 }
 
