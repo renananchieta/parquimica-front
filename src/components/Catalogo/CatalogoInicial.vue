@@ -184,9 +184,10 @@ const limparFiltros = () => {
 //   })
 // }
 const viewItem = (item) => {
+  let id = item.id;
   let parametros = {
     imprime_literatura: 'true',
-    codigo_produto: item.id
+    codigo_produto: id
   }
   console.log(parametros);
   api.get('/impressao', {params: parametros, responseType: 'blob'})
