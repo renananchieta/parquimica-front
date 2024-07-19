@@ -104,6 +104,7 @@ const rules = [
  * Methods
  */
 const autenticacao = () => {
+  carregando.value = true;
   baixarCookie().then(() => {
     ajaxLogin();
   });
