@@ -24,18 +24,11 @@
             placeholder="exemplo123@gmail.com"
             prepend-inner-icon="mdi-email-outline"
             variant="outlined"
+            :rules="rules"
           ></v-text-field>
     
           <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
             Senha
-    
-            <!-- <a
-              class="text-caption text-decoration-none text-blue"
-              href="#"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Esqueci minha senha</a> -->
           </div>
     
           <v-text-field
@@ -47,6 +40,7 @@
             placeholder="Inserir senha"
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
+            :rules="rules"
             @click:append-inner="visible = !visible"
           ></v-text-field>
     
@@ -56,8 +50,8 @@
             size="large"
             variant="elevated"
             block
+            :loading="carregando"
             @click="autenticacao()"
-            :disable="carregando"
           >
             Entrar
           </v-btn>
@@ -99,6 +93,13 @@ const localStorageToken = ref("");
 const router = useRouter();
 const store = useAppStore();
 
+const rules = [
+  value => {
+    if (value) return true
+    return 'Campo obrigatório.'
+  },
+]
+
 /**
  * Methods
  */
@@ -124,7 +125,8 @@ const ajaxLogin = async() => {
     })
     .catch((error) => {
         carregando.value = false;
-        alert(error.response.data);
+        if(error.response.data.message) alert(error.response.data.message);
+        else alert(error.response.data);
     })
     .finally(() => {
         carregando.value = false;
