@@ -126,8 +126,12 @@ const ajaxLogin = async() => {
     })
     .catch((error) => {
         carregando.value = false;
-        if(error.response.data.message) alert(error.response.data.message);
-        else alert(error.response.data);
+        if (error.response) {
+          if (error.response.data.message) alert(error.response.data.message);
+          else alert(error.response.data);
+      } else if (error.request) {
+        alert('Erro de comunicação: API fora do ar.');
+      }
     })
     .finally(() => {
         carregando.value = false;
