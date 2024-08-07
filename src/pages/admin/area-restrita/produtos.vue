@@ -4,22 +4,29 @@
             <v-card-title>ÁREA RESTRITA / PRODUTOS</v-card-title>
             <v-card-subtitle>Busque o produto desejado e altere suas informações</v-card-subtitle>
 
-            <v-row class="ma-2">
-                <v-col cols="12" md="6">
-                    <auto-complete-remoto
-                        v-model="form.produto"
-                        v-model:valor.sync="produtos"
-                        :carregando="loading"
-                        item-title="nome"
-                        item-value="id"
-                        label="Buscar Produto"
-                        @pesquisa-autocomplete="getProdutos"
-                        variant="outlined"
-                        density="compact"
-                        append-inner-icon="mdi mdi-list-box-outline"
-                    />
-                </v-col>
-            </v-row>
+            <v-form @submit.prevent="buscarProduto()">
+                <v-row class="ma-2">
+                    <v-col cols="12" md="6">
+                        <auto-complete-remoto
+                            v-model="form.produto"
+                            v-model:valor.sync="produtos"
+                            :carregando="loading"
+                            item-title="nome"
+                            item-value="id"
+                            label="Buscar Produto"
+                            @pesquisa-autocomplete="getProdutos"
+                            variant="outlined"
+                            density="compact"
+                            append-inner-icon="mdi mdi-list-box-outline"
+                        />
+                    </v-col>
+                </v-row>
+                <v-card-actions class="ma-2"> 
+                    <v-btn color="primary" variant="elevated">
+                        <v-icon>mdi mdi-magnify</v-icon>Buscar
+                    </v-btn>
+                </v-card-actions>
+            </v-form>
         </v-card>
     </v-container>
 </template>
@@ -42,7 +49,7 @@ const form = ref({
 /**
  * Methods
  */
- const getProdutos = (pesquisa) => {
+const getProdutos = (pesquisa) => {
   if (form.value.produto) {
     return;
   }
@@ -57,5 +64,9 @@ const form = ref({
       alert("Erro ao buscar Produto" + error);
     });
 };
+
+const buscarProduto = () => {
+    confirm("buscar Produto.");
+}
 
 </script>
