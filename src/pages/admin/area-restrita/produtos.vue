@@ -72,6 +72,18 @@ const getProdutos = (pesquisa) => {
 
 const buscarProduto = () => {
     console.log(form.value.produto);
+    loading.value = true;
+    api
+      .get(`/firebird/literatura/${form.value.produto}`)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        loading.value = false;
+      })
 }
 
 </script>
