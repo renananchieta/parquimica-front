@@ -6,19 +6,13 @@
 
             <v-row class="ma-2">
                 <v-col cols="12" md="6">
-                    <v-text-field
-                    label="Buscar produto"
-                    variant="outlined"
-                    density="compact"/>
-                </v-col>
-                <v-col cols="12" md="6">
                     <auto-complete-remoto
                         v-model="form.produto"
                         v-model:valor.sync="produtos"
                         :carregando="loading"
                         item-title="nome"
                         item-value="id"
-                        label="Chefe de apoio ASCOM"
+                        label="Buscar Produto"
                         @pesquisa-autocomplete="getProdutos"
                         variant="outlined"
                         density="compact"
