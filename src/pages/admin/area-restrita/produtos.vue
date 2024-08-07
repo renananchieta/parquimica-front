@@ -20,12 +20,12 @@
                             append-inner-icon="mdi mdi-list-box-outline"
                         />
                     </v-col>
+                    <v-col cols="12" md="6">
+                        <v-btn color="primary" variant="elevated" type="submit">
+                            <v-icon>mdi mdi-magnify</v-icon>Buscar
+                        </v-btn>
+                    </v-col>
                 </v-row>
-                <v-card-actions class="ma-2"> 
-                    <v-btn color="primary" variant="elevated" type="submit">
-                        <v-icon>mdi mdi-magnify</v-icon>Buscar
-                    </v-btn>
-                </v-card-actions>
             </v-form>
 
             <v-divider></v-divider>
