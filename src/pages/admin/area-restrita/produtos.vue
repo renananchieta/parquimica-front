@@ -48,7 +48,7 @@ const form = ref({
   }
   loading.value = true;
   api
-    .get(`/catalogo/grid`)
+    .get(`/combo/produtos`)
     .then((response) => {
         produtos.value = response.data;
         loading.value = false;
