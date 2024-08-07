@@ -22,10 +22,15 @@
                     </v-col>
                 </v-row>
                 <v-card-actions class="ma-2"> 
-                    <v-btn color="primary" variant="elevated">
+                    <v-btn color="primary" variant="elevated" type="submit">
                         <v-icon>mdi mdi-magnify</v-icon>Buscar
                     </v-btn>
                 </v-card-actions>
+            </v-form>
+            <v-divider></v-divider>
+            <v-card-title>Dados do Produto:</v-card-title>
+            <v-form>
+
             </v-form>
         </v-card>
     </v-container>
@@ -44,7 +49,7 @@ const loading = ref(false);
 const produtos = ref([]);
 const form = ref({
     produto: ""
-})
+});
 
 /**
  * Methods
@@ -66,7 +71,7 @@ const getProdutos = (pesquisa) => {
 };
 
 const buscarProduto = () => {
-    confirm("buscar Produto.");
+    console.log(form.value.produto);
 }
 
 </script>
