@@ -17,10 +17,9 @@
 
                 <v-row class="ma-2">
                     <v-col cols="12" md="3" align-self="align">
-                        <v-card elevation="3" @click="navegarPara('/admin/area-restrita/produtos')">
-                            <v-img
-                            src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-                            ></v-img>
+                        <v-card 
+                        elevation="3" 
+                        @click="navegarPara('/admin/area-restrita/produtos')">
                             <v-card-title>Produtos</v-card-title>
                             <v-card-subtitle class="mb-2">Editar informações de produtos</v-card-subtitle>
                             <v-card-actions>
@@ -30,10 +29,9 @@
                     </v-col>
                     
                     <v-col cols="12" md="3" align-self="align">
-                        <v-card elevation="3" @click="navegarPara('/admin/area-restrita/informacoes-contato')">
-                            <v-img
-                            src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-                            ></v-img>
+                        <v-card 
+                        elevation="3" 
+                        @click="navegarPara('/admin/area-restrita/informacoes-contato')">
                             <v-card-title>Informações de Contato</v-card-title>
                             <v-card-subtitle class="mb-2">Editar informações de contato </v-card-subtitle>
                             <v-card-actions>

@@ -66,6 +66,20 @@
                             density="compact"/>
                         </v-col>
                     </v-row>
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <v-file-input
+                            label="Imagem"
+                            v-model="formProduto.arquivo"
+                            variant="outlined"
+                            density="compact"
+                            show-size
+                            small-sheets
+                            accept=".pdf"/>
+                            <!-- append-inner-icon="mdi mdi-eye" -->
+                            <!-- @click:append="verArquivo()" -->
+                        </v-col>
+                    </v-row>
                     <v-card-actions>
                         <v-btn color="primary" variant="elevated" type="submit">
                             <v-icon>mdi mdi-pencil</v-icon>Alterar
@@ -96,6 +110,7 @@ const formProduto = ref({
     subtituloProduto: "",
     modoAcao: "",
     variantes: "",
+    arquivo: []
 });
 
 /**
