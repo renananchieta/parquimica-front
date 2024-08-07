@@ -156,7 +156,7 @@ const baixarCookie = async () => {
 };
 
 /**
-* Hooks 
+* Hooks
 */
 onBeforeMount(async() => {
   if(store.usuario?.nome) return;

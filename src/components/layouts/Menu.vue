@@ -120,6 +120,11 @@ const items = ([
                 "icon": 'mdi mdi-account-card-outline', 
                 "to": "/admin/perfil"
             },
+            {
+                "title": 'Área Restrita', 
+                "icon": 'mdi mdi-security', 
+                "to": "/admin/area-restrita"
+            }
         ],
     },
 ]);
