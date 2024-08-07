@@ -27,10 +27,51 @@
                     </v-btn>
                 </v-card-actions>
             </v-form>
-            <v-divider></v-divider>
-            <v-card-title>Dados do Produto:</v-card-title>
-            <v-form>
 
+            <v-divider></v-divider>
+
+            <v-card-title>Dados do Produto:</v-card-title>
+
+            <v-form @submit.prevent="alterarInformacoesProduto()">
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                            label="Nome do Produto"
+                            v-model="formProduto.nomeProduto"
+                            variant="outlined"
+                            density="compact"/>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                            label="Subtítulo do Produto"
+                            v-model="formProduto.subtituloProduto"
+                            variant="outlined"
+                            density="compact"/>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                            label="Modo de ação"
+                            v-model="formProduto.modoAcao"
+                            variant="outlined"
+                            density="compact"/>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                            label="Variantes do produto"
+                            v-model="formProduto.variantes"
+                            variant="outlined"
+                            density="compact"/>
+                        </v-col>
+                    </v-row>
+                    <v-card-actions>
+                        <v-btn color="primary" variant="elevated" type="submit">
+                            <v-icon>mdi mdi-pencil</v-icon>Alterar
+                        </v-btn>
+                    </v-card-actions>
+                </v-container>
             </v-form>
         </v-card>
     </v-container>
@@ -49,6 +90,12 @@ const loading = ref(false);
 const produtos = ref([]);
 const form = ref({
     produto: ""
+});
+const formProduto = ref({
+    nomeProduto: "",
+    subtituloProduto: "",
+    modoAcao: "",
+    variantes: "",
 });
 
 /**
@@ -71,12 +118,14 @@ const getProdutos = (pesquisa) => {
 };
 
 const buscarProduto = () => {
-    console.log(form.value.produto);
     loading.value = true;
     api
       .get(`/firebird/literatura/${form.value.produto}`)
       .then((response) => {
         console.log(response.data);
+        console.log(response.data[0]);
+        console.log(response.data[0]['PRD_NOME']);
+        console.log(response.data[0]['PRD_LIT_DSC']);
       })
       .catch((error) => {
         console.log(error);
