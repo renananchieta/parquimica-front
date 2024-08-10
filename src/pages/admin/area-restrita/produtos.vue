@@ -74,7 +74,7 @@
                             density="compact"/>
                         </v-col>
                     </v-row>
-                    <!-- <v-row>
+                    <v-row>
                         <v-col cols="12" md="6">
                             <v-file-input
                             label="Imagem"
@@ -83,11 +83,11 @@
                             density="compact"
                             show-size
                             small-sheets
-                            accept=".pdf"/> -->
+                            accept=".pdf"/>
                             <!-- append-inner-icon="mdi mdi-eye" -->
                             <!-- @click:append="verArquivo()" -->
-                        <!-- </v-col>
-                    </v-row> -->
+                        </v-col>
+                    </v-row>
                     <v-card-actions>
                         <v-btn color="primary" variant="elevated" type="submit">
                             <v-icon>mdi mdi-mdi mdi-content-save-outline</v-icon>Salvar
@@ -165,7 +165,7 @@ const formProduto = ref({
     subtituloProduto: "",
     modoAcao: "",
     variantes: [],
-    // arquivo: []
+    arquivo: []
 });
 const dialog = ref(false);
 const mensagem = ref("");
@@ -209,22 +209,61 @@ const buscarProduto = () => {
       })
 }
 
+// const salvarProdutoBaseLocal = () => {
+//     mensagem.value = "Aguarde. Estamos processando";
+//     loading.value = true;
+//     dialog.value = true;
+
+//     formProduto.value.codigoProduto = form.value.produto;
+//     // formProduto.value.variantes = formProduto.value.variantes.map(id => ({ id }));
+//     let formTratado = {
+//         nomeProduto: formProduto.value.nomeProduto,
+//         codigoProduto: formProduto.value.codigoProduto,
+//         subtituloProduto: formProduto.value.subtituloProduto,
+//         modoAcao: formProduto.value.modoAcao,
+//         variantes: formProduto.value.variantes.map(id => ({ id }))
+//     }
+
+//     api.post('/area-restrita/produtos', formTratado)
+//     .then((response) => {
+//         loading.value = false;
+//         mensagem.value = response.data.message;
+
+//         setTimeout(() => {
+//             dialog.value = false;
+//         }, 2500);
+//     })
+//     .catch(() => {
+//         mensagem.value = "Não foi possível salvar o produto. Tente novamente.";
+//         loading.value = false;
+//         setTimeout(() => {
+//             dialog.value = false;
+//         }, 2500);
+//     })
+// }
+
 const salvarProdutoBaseLocal = () => {
     mensagem.value = "Aguarde. Estamos processando";
     loading.value = true;
     dialog.value = true;
 
-    formProduto.value.codigoProduto = form.value.produto;
-    // formProduto.value.variantes = formProduto.value.variantes.map(id => ({ id }));
-    let formTratado = {
-        nomeProduto: formProduto.value.nomeProduto,
-        codigoProduto: formProduto.value.codigoProduto,
-        subtituloProduto: formProduto.value.subtituloProduto,
-        modoAcao: formProduto.value.modoAcao,
-        variantes: formProduto.value.variantes.map(id => ({ id }))
-    }
+    const formData = new FormData();
+    formData.append("nomeProduto", formProduto.value.nomeProduto);
+    formData.append("codigoProduto", formProduto.value.codigoProduto);
+    formData.append("subtituloProduto", formProduto.value.subtituloProduto);
+    formData.append("modoAcao", formProduto.value.modoAcao);
+    formData.append("arquivo", formProduto.value.arquivo[0]); // Supondo que o arquivo PDF esteja em `formProduto.value.arquivo`
+    
+    // Adiciona as variantes
+    formProduto.value.variantes.forEach((id, index) => {
+        formData.append(`variantes[${index}]`, id);
+    });
 
-    api.post('/area-restrita/produtos', formTratado)
+    api.post('/area-restrita/produtos', formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
     .then((response) => {
         loading.value = false;
         mensagem.value = response.data.message;
@@ -239,7 +278,7 @@ const salvarProdutoBaseLocal = () => {
         setTimeout(() => {
             dialog.value = false;
         }, 2500);
-    })
+    });
 }
 
 </script>
