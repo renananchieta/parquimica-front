@@ -90,7 +90,7 @@
                     </v-row> -->
                     <v-card-actions>
                         <v-btn color="primary" variant="elevated" type="submit">
-                            <v-icon>mdi mdi-pencil</v-icon>Alterar
+                            <v-icon>mdi mdi-mdi mdi-content-save-outline</v-icon>Salvar
                         </v-btn>
                     </v-card-actions>
                 </v-container>
@@ -226,16 +226,14 @@ const salvarProdutoBaseLocal = () => {
 
     api.post('/area-restrita/produtos', formTratado)
     .then((response) => {
-        console.log(response.data);
         loading.value = false;
+        mensagem.value = response.data.message;
 
-        mensagem.value = response.data;
         setTimeout(() => {
             dialog.value = false;
         }, 2500);
     })
     .catch((error) => {
-        console.log(error);
         mensagem.value = "Não foi possível salvar o produto. Tente novamente.";
         loading.value = false;
         setTimeout(() => {
