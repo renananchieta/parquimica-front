@@ -19,7 +19,7 @@
                             density="compact"
                             append-inner-icon="mdi mdi-list-box-outline"
                         />
-                        {{ form.produto }}
+                        <!-- {{ form.produto }} -->
                     </v-col>
                     <v-col cols="12" md="6">
                         <v-btn color="primary" variant="elevated" type="submit">
@@ -33,7 +33,7 @@
 
             <v-card-title>Dados do Produto:</v-card-title>
 
-            <v-form @submit.prevent="alterarInformacoesProduto()">
+            <v-form @submit.prevent="salvarProdutoBaseLocal()">
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="6">
@@ -74,7 +74,7 @@
                             density="compact"/>
                         </v-col>
                     </v-row>
-                    <v-row>
+                    <!-- <v-row>
                         <v-col cols="12" md="6">
                             <v-file-input
                             label="Imagem"
@@ -83,11 +83,11 @@
                             density="compact"
                             show-size
                             small-sheets
-                            accept=".pdf"/>
+                            accept=".pdf"/> -->
                             <!-- append-inner-icon="mdi mdi-eye" -->
                             <!-- @click:append="verArquivo()" -->
-                        </v-col>
-                    </v-row>
+                        <!-- </v-col>
+                    </v-row> -->
                     <v-card-actions>
                         <v-btn color="primary" variant="elevated" type="submit">
                             <v-icon>mdi mdi-pencil</v-icon>Alterar
@@ -116,10 +116,11 @@ const form = ref({
 });
 const formProduto = ref({
     nomeProduto: "",
+    codigoProduto: form.value.produto,
     subtituloProduto: "",
     modoAcao: "",
-    variantes: "",
-    arquivo: []
+    variantes: [],
+    // arquivo: []
 });
 
 /**
@@ -159,6 +160,22 @@ const buscarProduto = () => {
       .finally(() => {
         loading.value = false;
       })
+}
+
+const salvarProdutoBaseLocal = () => {
+    loading.value = true;
+
+    api.post('/area-restrita/produtos', formProduto.value)
+    .then((response) => {
+        console.log(response.data)
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+    .finally(() => {
+        loading.value = false
+    })
+
 }
 
 </script>
