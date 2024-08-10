@@ -95,6 +95,36 @@
                     </v-card-actions>
                 </v-container>
             </v-form>
+
+            <v-dialog
+            v-model="dialog"
+            max-width="320"
+            persistent>
+                <v-list
+                class="py-2"
+                color="primary"
+                elevation="12"
+                rounded="lg">
+                    <v-list-item>
+                        <v-list-item-title>{{ mensagem }}</v-list-item-title>
+
+                        <template v-slot:prepend>
+                            <div class="pe-4">
+                                <v-icon color="primary" size="x-large"></v-icon>
+                            </div>
+                        </template>
+
+                        <template v-slot:append>
+                            <v-progress-circular
+                            color="primary"
+                            v-model="loading"
+                            size="16"
+                            width="2"
+                            ></v-progress-circular>
+                        </template>
+                    </v-list-item>
+                </v-list>
+            </v-dialog>
         </v-card>
     </v-container>
 </template>
@@ -122,6 +152,8 @@ const formProduto = ref({
     variantes: [],
     // arquivo: []
 });
+const dialog = ref(false);
+const mensagem = ref("");
 
 /**
  * Methods
@@ -163,7 +195,9 @@ const buscarProduto = () => {
 }
 
 const salvarProdutoBaseLocal = () => {
+    mensagem.value = "Aguarde. Estamos processando";
     loading.value = true;
+    dialog.value = true;
 
     formProduto.value.codigoProduto = form.value.produto;
     // formProduto.value.variantes = formProduto.value.variantes.map(id => ({ id }));
@@ -177,13 +211,23 @@ const salvarProdutoBaseLocal = () => {
 
     api.post('/area-restrita/produtos', formTratado)
     .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
+
+        mensagem.value = response.data;
+        loading.value = false;
+        setTimeout(() => {
+            dialog.value = false;
+        }, 2500);
     })
     .catch((error) => {
-        console.log(error)
+        console.log(error);
+
+        loading.value = false;
+        setTimeout(() => {
+            dialog.value = false;
+        }, 2500);
     })
     .finally(() => {
-        loading.value = false
     })
 
 }
