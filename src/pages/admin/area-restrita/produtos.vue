@@ -117,8 +117,7 @@
                         <template v-slot:append>
                             <v-progress-circular
                             color="primary"
-                            v-model="loading"
-                            indeterminate
+                            :indeterminate="loading"
                             size="16"
                             width="2"
                             ></v-progress-circular>
