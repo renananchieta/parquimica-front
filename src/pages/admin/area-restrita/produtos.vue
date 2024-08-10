@@ -167,8 +167,15 @@ const salvarProdutoBaseLocal = () => {
 
     formProduto.value.codigoProduto = form.value.produto;
     // formProduto.value.variantes = formProduto.value.variantes.map(id => ({ id }));
+    let formTratado = {
+        nomeProduto: formProduto.value.nomeProduto,
+        codigoProduto: formProduto.value.codigoProduto,
+        subtituloProduto: formProduto.value.subtituloProduto,
+        modoAcao: formProduto.value.modoAcao,
+        variantes: formProduto.value.variantes.map(id => ({ id }))
+    }
 
-    api.post('/area-restrita/produtos', formProduto.value)
+    api.post('/area-restrita/produtos', formTratado)
     .then((response) => {
         console.log(response.data)
     })
