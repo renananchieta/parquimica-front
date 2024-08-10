@@ -118,6 +118,7 @@
                             <v-progress-circular
                             color="primary"
                             v-model="loading"
+                            indeterminate
                             size="16"
                             width="2"
                             ></v-progress-circular>
