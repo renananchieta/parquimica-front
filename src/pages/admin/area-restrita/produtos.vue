@@ -117,6 +117,15 @@
                                 size="112"
                                 ></v-icon>
                             </div>
+
+                            <div class="pe-4" v-show="mensagem == 'Não foi possível salvar o produto. Tente novamente.'">
+                                <v-icon
+                                class="mb-5"
+                                color="red"
+                                icon="mdi mdi-alert-circle"
+                                size="112"
+                                ></v-icon>
+                            </div>
                         </template>
 
                         <template v-slot:append>
@@ -227,7 +236,7 @@ const salvarProdutoBaseLocal = () => {
     })
     .catch((error) => {
         console.log(error);
-
+        mensagem.value = "Não foi possível salvar o produto. Tente novamente.";
         loading.value = false;
         setTimeout(() => {
             dialog.value = false;
