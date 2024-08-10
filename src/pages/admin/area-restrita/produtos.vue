@@ -109,13 +109,19 @@
                         <v-list-item-title>{{ mensagem }}</v-list-item-title>
 
                         <template v-slot:prepend>
-                            <div class="pe-4">
-                                <v-icon color="primary" size="x-large"></v-icon>
+                            <div class="pe-4" v-show="mensagem == 'Registro salvo com sucesso!'">
+                                <v-icon
+                                class="mb-5"
+                                color="success"
+                                icon="mdi-check-circle"
+                                size="112"
+                                ></v-icon>
                             </div>
                         </template>
 
                         <template v-slot:append>
                             <v-progress-circular
+                            v-show="loading == true"
                             color="primary"
                             :indeterminate="loading"
                             size="16"
