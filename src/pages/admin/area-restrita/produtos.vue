@@ -98,7 +98,7 @@
 
             <v-dialog
             v-model="dialog"
-            max-width="320"
+            max-width="450"
             persistent>
                 <v-list
                 class="py-2"
@@ -213,9 +213,9 @@ const salvarProdutoBaseLocal = () => {
     api.post('/area-restrita/produtos', formTratado)
     .then((response) => {
         console.log(response.data);
+        loading.value = false;
 
         mensagem.value = response.data;
-        loading.value = false;
         setTimeout(() => {
             dialog.value = false;
         }, 2500);
@@ -228,9 +228,6 @@ const salvarProdutoBaseLocal = () => {
             dialog.value = false;
         }, 2500);
     })
-    .finally(() => {
-    })
-
 }
 
 </script>
