@@ -166,7 +166,7 @@ const salvarProdutoBaseLocal = () => {
     loading.value = true;
 
     formProduto.value.codigoProduto = form.value.produto;
-    formProduto.value.variantes = formProduto.value.variantes.map(id => ({ id }));
+    // formProduto.value.variantes = formProduto.value.variantes.map(id => ({ id }));
 
     api.post('/area-restrita/produtos', formProduto.value)
     .then((response) => {
