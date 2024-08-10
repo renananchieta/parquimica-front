@@ -116,7 +116,7 @@ const form = ref({
 });
 const formProduto = ref({
     nomeProduto: "",
-    codigoProduto: form.value.produto,
+    codigoProduto: null,
     subtituloProduto: "",
     modoAcao: "",
     variantes: [],
@@ -164,6 +164,8 @@ const buscarProduto = () => {
 
 const salvarProdutoBaseLocal = () => {
     loading.value = true;
+
+    formProduto.value.codigoProduto = form.value.produto;
 
     api.post('/area-restrita/produtos', formProduto.value)
     .then((response) => {
