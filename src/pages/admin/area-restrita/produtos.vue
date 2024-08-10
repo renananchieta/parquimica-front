@@ -249,7 +249,7 @@ const salvarProdutoBaseLocal = () => {
 
     const formData = new FormData();
     formData.append("nomeProduto", formProduto.value.nomeProduto);
-    formData.append("codigoProduto", formProduto.value.codigoProduto);
+    formData.append("codigoProduto", form.value.produto);
     formData.append("subtituloProduto", formProduto.value.subtituloProduto);
     formData.append("modoAcao", formProduto.value.modoAcao);
     formData.append("arquivo", formProduto.value.arquivo[0]); // Supondo que o arquivo PDF esteja em `formProduto.value.arquivo`
