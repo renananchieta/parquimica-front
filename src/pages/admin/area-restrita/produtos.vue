@@ -14,7 +14,7 @@
                             item-title="nome"
                             item-value="id"
                             label="Buscar Produto"
-                            @pesquisa-autocomplete="getProdutos"
+                            @pesquisa-autocomplete="getProdutos()"
                             variant="outlined"
                             density="compact"
                             append-inner-icon="mdi mdi-list-box-outline"
@@ -43,25 +43,32 @@
                             density="compact"/>
                         </v-col>
                         <v-col cols="12" md="6">
+                            <auto-complete-remoto-multiple
+                            v-model="formProduto.variantes"
+                            v-model:valor.sync="produtos"
+                            :carregando="loading"
+                            item-title="nome"
+                            item-value="id"
+                            label="Variantes do produto"
+                            @pesquisa-autocomplete="getProdutos()"
+                            variant="outlined"
+                            density="compact"
+                            append-inner-icon="mdi mdi-list-box-outline"
+                        />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="12">
                             <v-text-field
                             label="Subtítulo do Produto"
                             v-model="formProduto.subtituloProduto"
                             variant="outlined"
                             density="compact"/>
                         </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="12">
                             <v-text-field
                             label="Modo de ação"
                             v-model="formProduto.modoAcao"
-                            variant="outlined"
-                            density="compact"/>
-                        </v-col>
-                        <v-col cols="12" md="6">
-                            <v-text-field
-                            label="Variantes do produto"
-                            v-model="formProduto.variantes"
                             variant="outlined"
                             density="compact"/>
                         </v-col>
@@ -95,6 +102,7 @@
 import router from "@/router";
 import { ref } from "vue";
 import AutoCompleteRemoto from "@/components/AutoCompleteRemoto.vue";
+import AutoCompleteRemotoMultiple from "@/components/AutoCompleteRemotoMultiple.vue";
 import api from "@/plugins/api";
 
 /**
