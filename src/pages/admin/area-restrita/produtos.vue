@@ -98,7 +98,7 @@
 
             <v-dialog
             v-model="dialog"
-            max-width="450"
+            width="auto"
             persistent>
                 <v-list
                 class="py-2"
