@@ -33,7 +33,7 @@
 
             <v-card-title>Dados do Produto:</v-card-title>
 
-            <v-form @submit.prevent="salvarProdutoBaseLocal()">
+            <v-form @submit.prevent="alterarProdutoBaseLocal()">
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="6">
@@ -160,6 +160,7 @@ const form = ref({
     produto: ""
 });
 const formProduto = ref({
+    id: null,
     nomeProduto: "",
     codigoProduto: null,
     subtituloProduto: "",
@@ -192,14 +193,12 @@ const getProdutos = (pesquisa) => {
 const buscarProduto = () => {
     loading.value = true;
     api
-      .get(`/area-restrita/produtos/base-local/${form.value.produto}`)
+      .get(`/area-restrita/produto/${form.value.produto}`)
       .then((response) => {
-        console.log(response.data);
-        // console.log(response.data[0]);
-        // console.log(response.data[0]['detalhes'][0]['LID_DSC']);
-        // formProduto.value.nomeProduto = response.data[0]['PRD_NOME'];
-        // formProduto.value.subtituloProduto = response.data[0]['PRD_LIT_DSC'];
-        // formProduto.value.modoAcao = response.data[0]['detalhes'][0]['LID_DSC'];
+        formProduto.value.id = response.data.id;
+        formProduto.value.nomeProduto = response.data.nome_produto;
+        formProduto.value.subtituloProduto = response.data.subtitulo;
+        formProduto.value.modoAcao = response.data.modo_acao;
       })
       .catch((error) => {
         console.log(error);
@@ -209,38 +208,38 @@ const buscarProduto = () => {
       })
 }
 
-// const salvarProdutoBaseLocal = () => {
-//     mensagem.value = "Aguarde. Estamos processando";
-//     loading.value = true;
-//     dialog.value = true;
+const alterarProdutoBaseLocal = () => {
+    mensagem.value = "Aguarde. Estamos processando";
+    loading.value = true;
+    dialog.value = true;
 
-//     formProduto.value.codigoProduto = form.value.produto;
-//     // formProduto.value.variantes = formProduto.value.variantes.map(id => ({ id }));
-//     let formTratado = {
-//         nomeProduto: formProduto.value.nomeProduto,
-//         codigoProduto: formProduto.value.codigoProduto,
-//         subtituloProduto: formProduto.value.subtituloProduto,
-//         modoAcao: formProduto.value.modoAcao,
-//         variantes: formProduto.value.variantes.map(id => ({ id }))
-//     }
+    formProduto.value.codigoProduto = form.value.produto;
+    // formProduto.value.variantes = formProduto.value.variantes.map(id => ({ id }));
+    let formTratado = {
+        nomeProduto: formProduto.value.nomeProduto,
+        codigoProduto: formProduto.value.codigoProduto,
+        subtituloProduto: formProduto.value.subtituloProduto,
+        modoAcao: formProduto.value.modoAcao,
+        variantes: formProduto.value.variantes.map(id => ({ id }))
+    }
 
-//     api.post('/area-restrita/produtos', formTratado)
-//     .then((response) => {
-//         loading.value = false;
-//         mensagem.value = response.data.message;
+    api.put(`/area-restrita/produto/${form.value.produto}/update`, formTratado)
+    .then((response) => {
+        loading.value = false;
+        mensagem.value = response.data.message;
 
-//         setTimeout(() => {
-//             dialog.value = false;
-//         }, 2500);
-//     })
-//     .catch(() => {
-//         mensagem.value = "Não foi possível salvar o produto. Tente novamente.";
-//         loading.value = false;
-//         setTimeout(() => {
-//             dialog.value = false;
-//         }, 2500);
-//     })
-// }
+        setTimeout(() => {
+            dialog.value = false;
+        }, 2500);
+    })
+    .catch(() => {
+        mensagem.value = "Não foi possível salvar o produto. Tente novamente.";
+        loading.value = false;
+        setTimeout(() => {
+            dialog.value = false;
+        }, 2500);
+    })
+}
 
 const salvarProdutoBaseLocal = () => {
     mensagem.value = "Aguarde. Estamos processando";
