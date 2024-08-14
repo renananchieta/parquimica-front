@@ -192,14 +192,14 @@ const getProdutos = (pesquisa) => {
 const buscarProduto = () => {
     loading.value = true;
     api
-      .get(`/area-restrita/produtos/base-local/${form.value.produto}`)
+      .get(`/firebird/literatura/${form.value.produto}`)
       .then((response) => {
         console.log(response.data);
-        // console.log(response.data[0]);
-        // console.log(response.data[0]['detalhes'][0]['LID_DSC']);
-        // formProduto.value.nomeProduto = response.data[0]['PRD_NOME'];
-        // formProduto.value.subtituloProduto = response.data[0]['PRD_LIT_DSC'];
-        // formProduto.value.modoAcao = response.data[0]['detalhes'][0]['LID_DSC'];
+        console.log(response.data[0]);
+        console.log(response.data[0]['detalhes'][0]['LID_DSC']);
+        formProduto.value.nomeProduto = response.data[0]['PRD_NOME'];
+        formProduto.value.subtituloProduto = response.data[0]['PRD_LIT_DSC'];
+        formProduto.value.modoAcao = response.data[0]['detalhes'][0]['LID_DSC'];
       })
       .catch((error) => {
         console.log(error);
