@@ -195,10 +195,10 @@ const buscarProduto = () => {
     api
       .get(`/area-restrita/produto/${form.value.produto}`)
       .then((response) => {
-        formProduto.value.id = response.data.id;
-        formProduto.value.nomeProduto = response.data.nome_produto;
-        formProduto.value.subtituloProduto = response.data.subtitulo;
-        formProduto.value.modoAcao = response.data.modo_acao;
+        formProduto.value.id = response.data[0].id;
+        formProduto.value.nomeProduto = response.data[0].nome_produto;
+        formProduto.value.subtituloProduto = response.data[0].subtitulo;
+        formProduto.value.modoAcao = response.data[0].modo_acao;
       })
       .catch((error) => {
         console.log(error);
