@@ -11,8 +11,8 @@
                             v-model="form.produto"
                             v-model:valor.sync="produtos"
                             :carregando="loading"
-                            item-title="nome"
-                            item-value="id"
+                            item-title="nome_produto"
+                            item-value="codigo_produto"
                             label="Buscar Produto"
                             @pesquisa-autocomplete="getProdutos()"
                             variant="outlined"
@@ -36,38 +36,32 @@
             <v-form @submit.prevent="alterarProdutoBaseLocal()">
                 <v-container>
                     <v-row>
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="12">
                             <v-text-field
                             label="Nome do Produto"
                             v-model="formProduto.nomeProduto"
                             variant="outlined"
                             density="compact"/>
                         </v-col>
-                        <v-col cols="12" md="6">
-                            <auto-complete-remoto-multiple
+                        <v-col cols="12" md="12">
+                            <v-textarea
                             v-model="formProduto.variantes"
-                            v-model:valor.sync="produtos"
                             :carregando="loading"
-                            item-title="nome"
-                            item-value="id"
                             label="Variantes do produto"
-                            @pesquisa-autocomplete="getProdutos()"
                             variant="outlined"
-                            density="compact"
-                            append-inner-icon="mdi mdi-list-box-outline"
-                        />
+                            density="compact"/>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-text-field
+                            <v-textarea
                             label="Subtítulo do Produto"
                             v-model="formProduto.subtituloProduto"
                             variant="outlined"
                             density="compact"/>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-text-field
+                            <v-textarea
                             label="Modo de ação"
                             v-model="formProduto.modoAcao"
                             variant="outlined"
@@ -90,7 +84,7 @@
                     </v-row>
                     <v-card-actions>
                         <v-btn color="primary" variant="elevated" type="submit">
-                            <v-icon>mdi mdi-mdi mdi-content-save-outline</v-icon>Salvar
+                            <v-icon>mdi mdi-mdi mdi-content-save-outline</v-icon>Alterar
                         </v-btn>
                     </v-card-actions>
                 </v-container>
@@ -165,7 +159,7 @@ const formProduto = ref({
     codigoProduto: null,
     subtituloProduto: "",
     modoAcao: "",
-    variantes: [],
+    variantes: "",
     arquivo: []
 });
 const dialog = ref(false);
@@ -199,6 +193,7 @@ const buscarProduto = () => {
         formProduto.value.nomeProduto = response.data[0].nome_produto;
         formProduto.value.subtituloProduto = response.data[0].subtitulo;
         formProduto.value.modoAcao = response.data[0].modo_acao;
+        formProduto.value.variantes = response.data[0].variantes;
       })
       .catch((error) => {
         console.log(error);
