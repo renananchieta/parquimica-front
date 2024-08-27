@@ -213,7 +213,7 @@ const alterarProdutoBaseLocal = () => {
     api.put(`/area-restrita/produto/${form.value.produto}/update`, formProduto.value)
     .then((response) => {
         loading.value = false;
-        mensagem.value = response.data.message;
+        mensagem.value = "Alterado com sucesso";
 
         setTimeout(() => {
             dialog.value = false;
