@@ -209,16 +209,8 @@ const alterarProdutoBaseLocal = () => {
     dialog.value = true;
 
     formProduto.value.codigoProduto = form.value.produto;
-    // formProduto.value.variantes = formProduto.value.variantes.map(id => ({ id }));
-    let formTratado = {
-        nomeProduto: formProduto.value.nomeProduto,
-        codigoProduto: formProduto.value.codigoProduto,
-        subtituloProduto: formProduto.value.subtituloProduto,
-        modoAcao: formProduto.value.modoAcao,
-        variantes: formProduto.value.variantes.map(id => ({ id }))
-    }
 
-    api.put(`/area-restrita/produto/${form.value.produto}/update`, formTratado)
+    api.put(`/area-restrita/produto/${form.value.produto}/update`, formProduto.value)
     .then((response) => {
         loading.value = false;
         mensagem.value = response.data.message;
