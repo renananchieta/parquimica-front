@@ -302,6 +302,9 @@ const alterarProdutoBaseLocal = () => {
     formData.append("subtituloProduto", formProduto.value.subtituloProduto);
     formData.append("variantes", formProduto.value.variantes);
     formData.append("modoAcao", formProduto.value.modoAcao);
+    formData.append("linha", formProduto.value.linha);
+    formData.append("funcao", formProduto.value.funcao);
+    formData.append("slug", formProduto.value.slug);
     formData.append("arquivo", formProduto.value.arquivo[0]); // Supondo que o arquivo PDF esteja em `formProduto.value.arquivo`
 
     console.log(formData);
