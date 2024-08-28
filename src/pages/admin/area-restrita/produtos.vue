@@ -77,9 +77,33 @@
                             density="compact"
                             show-size
                             small-sheets
-                            accept=".pdf"/>
+                            />
                             <!-- append-inner-icon="mdi mdi-eye" -->
                             <!-- @click:append="verArquivo()" -->
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                            label="Slug"
+                            v-model="formProduto.slug"
+                            variant="outlined"
+                            density="compact"/>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                            label="Linha do Produto"
+                            v-model="formProduto.linha"
+                            variant="outlined"
+                            density="compact"/>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                            v-model="formProduto.funcao"
+                            :carregando="loading"
+                            label="Funcao do produto"
+                            variant="outlined"
+                            density="compact"/>
                         </v-col>
                     </v-row>
                     <v-card-actions>
@@ -160,6 +184,9 @@ const formProduto = ref({
     subtituloProduto: "",
     modoAcao: "",
     variantes: "",
+    slug: "",
+    linha: "",
+    funcao: "",
     arquivo: []
 });
 const dialog = ref(false);
@@ -194,6 +221,7 @@ const buscarProduto = () => {
         formProduto.value.subtituloProduto = response.data[0].subtitulo;
         formProduto.value.modoAcao = response.data[0].modo_acao;
         formProduto.value.variantes = response.data[0].variantes;
+        formProduto.value.slug = response.data[0].slug;
       })
       .catch((error) => {
         console.log(error);
@@ -203,7 +231,7 @@ const buscarProduto = () => {
       })
 }
 
-const alterarProdutoBaseLocal = () => {
+const alterarProdutoBaseLocalBKP = () => {
     mensagem.value = "Aguarde. Estamos processando";
     loading.value = true;
     dialog.value = true;
@@ -237,15 +265,49 @@ const salvarProdutoBaseLocal = () => {
     formData.append("nomeProduto", formProduto.value.nomeProduto);
     formData.append("codigoProduto", form.value.produto);
     formData.append("subtituloProduto", formProduto.value.subtituloProduto);
+    formData.append("variantes", formProduto.value.variantes);
     formData.append("modoAcao", formProduto.value.modoAcao);
     formData.append("arquivo", formProduto.value.arquivo[0]); // Supondo que o arquivo PDF esteja em `formProduto.value.arquivo`
-    
-    // Adiciona as variantes
-    formProduto.value.variantes.forEach((id, index) => {
-        formData.append(`variantes[${index}]`, id);
-    });
 
     api.post('/area-restrita/produtos', formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+    .then((response) => {
+        loading.value = false;
+        mensagem.value = response.data.message;
+
+        setTimeout(() => {
+            dialog.value = false;
+        }, 2500);
+    })
+    .catch((error) => {
+        mensagem.value = "Não foi possível salvar o produto. Tente novamente.";
+        loading.value = false;
+        setTimeout(() => {
+            dialog.value = false;
+        }, 2500);
+    });
+}
+
+const alterarProdutoBaseLocal = () => {
+    mensagem.value = "Aguarde. Estamos processando";
+    loading.value = true;
+    dialog.value = true;
+
+    const formData = new FormData();
+    formData.append("nomeProduto", formProduto.value.nomeProduto);
+    formData.append("codigoProduto", form.value.produto);
+    formData.append("subtituloProduto", formProduto.value.subtituloProduto);
+    formData.append("variantes", formProduto.value.variantes);
+    formData.append("modoAcao", formProduto.value.modoAcao);
+    formData.append("arquivo", formProduto.value.arquivo[0]); // Supondo que o arquivo PDF esteja em `formProduto.value.arquivo`
+
+    console.log(formData);
+
+
+    api.post(`/area-restrita/produto/${form.value.produto}/update`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
