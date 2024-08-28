@@ -222,6 +222,8 @@ const buscarProduto = () => {
         formProduto.value.modoAcao = response.data[0].modo_acao;
         formProduto.value.variantes = response.data[0].variantes;
         formProduto.value.slug = response.data[0].slug;
+        formProduto.value.linha = response.data[0].linha;
+        formProduto.value.funcao = response.data[0].funcao;
       })
       .catch((error) => {
         console.log(error);
