@@ -77,6 +77,7 @@
                             density="compact"
                             show-size
                             small-sheets
+                            @update:modelValue="onFileChange()"
                             />
                             <!-- append-inner-icon="mdi mdi-eye" -->
                             <!-- @click:append="verArquivo()" -->
@@ -195,6 +196,11 @@ const mensagem = ref("");
 /**
  * Methods
  */
+const onFileChange = () => {
+    console.log(formProduto.value.arquivo);
+    
+}
+
 const getProdutos = (pesquisa) => {
   if (form.value.produto) {
     return;
