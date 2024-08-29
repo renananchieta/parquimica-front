@@ -36,10 +36,17 @@
             <v-form @submit.prevent="alterarProdutoBaseLocal()">
                 <v-container>
                     <v-row>
-                        <v-col cols="12" md="12">
+                        <v-col cols="12" md="6">
                             <v-text-field
                             label="Nome do Produto"
                             v-model="formProduto.nomeProduto"
+                            variant="outlined"
+                            density="compact"/>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                            label="Código do Produto"
+                            v-model="formProduto.codigoProduto"
                             variant="outlined"
                             density="compact"/>
                         </v-col>
@@ -64,6 +71,15 @@
                             <v-textarea
                             label="Modo de ação"
                             v-model="formProduto.modoAcao"
+                            variant="outlined"
+                            density="compact"/>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-textarea
+                            label="Recomendacao"
+                            v-model="formProduto.recomendacao"
                             variant="outlined"
                             density="compact"/>
                         </v-col>
@@ -108,8 +124,17 @@
                         </v-col>
                     </v-row>
                     <v-card-actions>
-                        <v-btn color="primary" variant="elevated" type="submit">
-                            <v-icon>mdi mdi-mdi mdi-content-save-outline</v-icon>Alterar
+                        <v-btn 
+                        color="primary" 
+                        variant="elevated" 
+                        @click="salvarProdutoBaseLocal()">
+                            <v-icon>mdi mdi-mdi mdi-content-save-outline</v-icon>Salvar novo produto
+                        </v-btn>
+                        <v-btn 
+                        color="primary" 
+                        variant="elevated" 
+                        @click="alterarProdutoBaseLocal()">
+                            <v-icon>mdi mdi-pencil</v-icon>Alterar produto
                         </v-btn>
                     </v-card-actions>
                 </v-container>
@@ -175,6 +200,7 @@ import api from "@/plugins/api";
  */
 const loading = ref(false);
 const produtos = ref([]);
+const codigoProduto = ref(0);
 const form = ref({
     produto: ""
 });
@@ -183,6 +209,7 @@ const formProduto = ref({
     nomeProduto: "",
     codigoProduto: null,
     subtituloProduto: "",
+    recomendacao: "",
     modoAcao: "",
     variantes: "",
     slug: "",
@@ -224,12 +251,14 @@ const buscarProduto = () => {
       .then((response) => {
         formProduto.value.id = response.data[0].id;
         formProduto.value.nomeProduto = response.data[0].nome_produto;
+        formProduto.value.codigoProduto = response.data[0].codigo_produto;
         formProduto.value.subtituloProduto = response.data[0].subtitulo;
         formProduto.value.modoAcao = response.data[0].modo_acao;
         formProduto.value.variantes = response.data[0].variantes;
         formProduto.value.slug = response.data[0].slug;
         formProduto.value.linha = response.data[0].linha;
         formProduto.value.funcao = response.data[0].funcao;
+        codigoProduto.value = response.data[0].codigo_produto;
       })
       .catch((error) => {
         console.log(error);
@@ -239,31 +268,6 @@ const buscarProduto = () => {
       })
 }
 
-const alterarProdutoBaseLocalBKP = () => {
-    mensagem.value = "Aguarde. Estamos processando";
-    loading.value = true;
-    dialog.value = true;
-
-    formProduto.value.codigoProduto = form.value.produto;
-
-    api.put(`/area-restrita/produto/${form.value.produto}/update`, formProduto.value)
-    .then((response) => {
-        loading.value = false;
-        mensagem.value = "Alterado com sucesso";
-
-        setTimeout(() => {
-            dialog.value = false;
-        }, 2500);
-    })
-    .catch(() => {
-        mensagem.value = "Não foi possível salvar o produto. Tente novamente.";
-        loading.value = false;
-        setTimeout(() => {
-            dialog.value = false;
-        }, 2500);
-    })
-}
-
 const salvarProdutoBaseLocal = () => {
     mensagem.value = "Aguarde. Estamos processando";
     loading.value = true;
@@ -271,10 +275,14 @@ const salvarProdutoBaseLocal = () => {
 
     const formData = new FormData();
     formData.append("nomeProduto", formProduto.value.nomeProduto);
-    formData.append("codigoProduto", form.value.produto);
+    formData.append("codigoProduto", formProduto.value.codigoProduto);
     formData.append("subtituloProduto", formProduto.value.subtituloProduto);
     formData.append("variantes", formProduto.value.variantes);
     formData.append("modoAcao", formProduto.value.modoAcao);
+    formData.append("linha", formProduto.value.linha);
+    formData.append("funcao", formProduto.value.funcao);
+    formData.append("slug", formProduto.value.slug);
+    formData.append("recomendacao", formProduto.value.recomendacao);
     formData.append("arquivo", formProduto.value.arquivo[0]); // Supondo que o arquivo PDF esteja em `formProduto.value.arquivo`
 
     api.post('/area-restrita/produtos', formData, {
@@ -306,19 +314,17 @@ const alterarProdutoBaseLocal = () => {
 
     const formData = new FormData();
     formData.append("nomeProduto", formProduto.value.nomeProduto);
-    formData.append("codigoProduto", form.value.produto);
+    formData.append("codigoProduto", formProduto.value.codigoProduto);
     formData.append("subtituloProduto", formProduto.value.subtituloProduto);
     formData.append("variantes", formProduto.value.variantes);
     formData.append("modoAcao", formProduto.value.modoAcao);
     formData.append("linha", formProduto.value.linha);
     formData.append("funcao", formProduto.value.funcao);
     formData.append("slug", formProduto.value.slug);
+    formData.append("recomendacao", formProduto.value.recomendacao);
     formData.append("arquivo", formProduto.value.arquivo[0]); // Supondo que o arquivo PDF esteja em `formProduto.value.arquivo`
 
-    console.log(formData);
-
-
-    api.post(`/area-restrita/produto/${form.value.produto}/update`, formData, {
+    api.post(`/area-restrita/produto/${codigoProduto.value}/update`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
