@@ -28,6 +28,30 @@
                             </v-card-actions>
                         </v-card>
                     </v-col>
+
+                    <v-col cols="12" md="3" align-self="align">
+                        <v-card 
+                        elevation="3" 
+                        @click="navegarPara('/admin/area-restrita/publicacao/site')">
+                            <v-card-title> <v-icon>mdi mdi-web</v-icon> Site</v-card-title>
+                            <v-card-subtitle class="mb-2">Criar postagem para o site</v-card-subtitle>
+                            <v-card-actions>
+                                <v-btn color="primary" variant="elevated" @click="navegarPara('/admin/area-restrita/publicacao/site')">Acessar</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-col>
+
+                    <v-col cols="12" md="3" align-self="align">
+                        <v-card 
+                        elevation="3" 
+                        @click="navegarPara('/admin/area-restrita/publicacao/blog')">
+                            <v-card-title> <v-icon>mdi mdi-post</v-icon> Blog</v-card-title>
+                            <v-card-subtitle class="mb-2">Criar postagem para o Blog</v-card-subtitle>
+                            <v-card-actions>
+                                <v-btn color="primary" variant="elevated" @click="navegarPara('/admin/area-restrita/publicacao/blog')">Acessar</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-col>
                 </v-row>
         </v-card>
     </v-container>
