@@ -154,14 +154,12 @@
                     </v-row>
                     <v-card-actions>
                         <v-btn 
-                        v-if="formProduto.id == 0"
                         color="primary" 
                         variant="elevated" 
                         @click="salvarProdutoBaseLocal()">
                             <v-icon>mdi mdi-mdi mdi-content-save-outline</v-icon>Salvar novo produto
                         </v-btn>
                         <v-btn 
-                        v-else
                         color="primary" 
                         variant="elevated" 
                         @click="alterarProdutoBaseLocal()">
@@ -312,12 +310,14 @@ const salvarProdutoBaseLocal = () => {
         codigoProduto: formProduto.value.codigoProduto,
         subtituloProduto: formProduto.value.subtituloProduto,
         modoAcao: formProduto.value.modoAcao,
-        variantes: formProduto.value.variantes.map(v => ({ codigo_produto: v })),
+
+        variantes: formProduto.value.id == 0 ? formProduto.value.variantes.map(v => ({ codigo_produto: v })) : formProduto.value.variantes.map(v => ({ codigo_produto: v.codigo_produto })),
+        
         slug: formProduto.value.nomeProduto,
         ativo_site: formProduto.value.ativo_site,
         recomendacao: formProduto.value.recomendacao,
-        linha: formProduto.value.linha.map(l => ({ codigo_linha: l })),
-        funcao: formProduto.value.funcao.map(f => ({ codigo_funcao: f }))
+        linha: formProduto.value.id == 0 ? formProduto.value.linha.map(l => ({ codigo_linha: l })) : formProduto.value.linha.map(l => ({ codigo_linha: l.codigo_linha })),
+        funcao: formProduto.value.id == 0 ? formProduto.value.funcao.map(f => ({ codigo_funcao: f })) : formProduto.value.funcao.map(f => ({ codigo_funcao: f.codigo_funcao }))
     };
 
     api.post('/area-restrita/produtos', payload)
@@ -347,6 +347,7 @@ const alterarProdutoBaseLocal = () => {
     dialog.value = true;
 
     const payload = {
+        id: formProduto.value.id,
         nomeProduto: formProduto.value.nomeProduto,
         codigoProduto: formProduto.value.codigoProduto,
         subtituloProduto: formProduto.value.subtituloProduto,
