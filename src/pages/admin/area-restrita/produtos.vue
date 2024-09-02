@@ -51,12 +51,21 @@
                             density="compact"/>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-textarea
+                            <v-autocomplete
+                            :items="produtos"
                             v-model="formProduto.variantes"
-                            :carregando="loading"
-                            label="Variantes do produto"
                             variant="outlined"
-                            density="compact"/>
+                            density="compact"
+                            item-title="nome_produto"
+                            item-value="codigo_produto"
+                            chips
+                            single-line
+                            closable-chips
+                            multiple
+                            color="primary"
+                            :loading="loading"
+                            label="Variantes">
+                            </v-autocomplete>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -234,7 +243,7 @@ const formProduto = ref({
     subtituloProduto: "",
     recomendacao: "",
     modoAcao: "",
-    variantes: "",
+    variantes: [],
     ativo_site: 1,
     slug: "",
     linha: [],
@@ -303,7 +312,7 @@ const salvarProdutoBaseLocal = () => {
         codigoProduto: formProduto.value.codigoProduto,
         subtituloProduto: formProduto.value.subtituloProduto,
         modoAcao: formProduto.value.modoAcao,
-        variantes: formProduto.value.variantes,
+        variantes: formProduto.value.variantes.map(v => ({ codigo_produto: v })),
         slug: formProduto.value.nomeProduto,
         ativo_site: formProduto.value.ativo_site,
         recomendacao: formProduto.value.recomendacao,
@@ -342,7 +351,7 @@ const alterarProdutoBaseLocal = () => {
         codigoProduto: formProduto.value.codigoProduto,
         subtituloProduto: formProduto.value.subtituloProduto,
         modoAcao: formProduto.value.modoAcao,
-        variantes: formProduto.value.variantes,
+        variantes: formProduto.value.variantes.map(v => ({ codigo_produto: v.codigo_produto })),
         slug: formProduto.value.nomeProduto,
         ativo_site: formProduto.value.ativo_site,
         recomendacao: formProduto.value.recomendacao,
@@ -482,6 +491,7 @@ const alterarProdutoBaseLocal2 = () => {
  */
 onMounted(() => {
     combos();
+    getProdutos();
 })
 
 </script>
