@@ -157,13 +157,7 @@
                         color="primary" 
                         variant="elevated" 
                         @click="salvarProdutoBaseLocal()">
-                            <v-icon>mdi mdi-mdi mdi-content-save-outline</v-icon>Salvar novo produto
-                        </v-btn>
-                        <v-btn 
-                        color="primary" 
-                        variant="elevated" 
-                        @click="alterarProdutoBaseLocal()">
-                            <v-icon>mdi mdi-pencil</v-icon>Alterar produto
+                            <v-icon>mdi mdi-mdi mdi-content-save-outline</v-icon>Salvar
                         </v-btn>
                     </v-card-actions>
                 </v-container>

@@ -11,6 +11,7 @@
                 <v-row>
                     <v-col cols="12" md="4">
                         <v-text-field
+                        v-model="form.categoria"
                         label="Categoria"
                         variant="outlined"
                         density="compact"
@@ -18,13 +19,19 @@
                     </v-col>
                     <v-col cols="12" md="4">
                         <v-text-field
+                        v-model="form.data_publicacao"
                         label="Data de publicação"
                         variant="outlined"
+                        type="date"
                         density="compact"
                         append-inner-icon="mdi mdi-calendar-range"/>
                     </v-col>
                     <v-col cols="12" md="4">
-                        <v-text-field
+                        <v-select
+                        v-model="form.status_publicacao"
+                        :items="items"
+                        item-title="descricao"
+                        item-value="status"
                         label="Status da publicação"
                         variant="outlined"
                         density="compact"
@@ -35,54 +42,30 @@
                 <v-row >
                     <v-col cols="12" md="12">
                         <v-text-field
+                        v-model="form.titulo"
                         label="Título"
                         variant="outlined"
                         density="compact"
                         append-inner-icon="mdi mdi-format-title"/>
                     </v-col>
 
-                    <v-col cols="12" md="12">
+                    <!-- <v-col cols="12" md="12">
                         <v-text-field
+                        v-model=""
                         label="Subtítulo"
                         variant="outlined"
                         density="compact"
                         append-inner-icon="mdi mdi-subtitles-outline"/>
-                    </v-col>
-                </v-row>
-
-                <v-row v-if="false">
-                    <v-col cols="12" md="12">
-                        <v-btn rounded="0" variant="flat" color="#E0E0E0" @click="applyTag('b')">
-                            <v-icon>mdi-format-bold</v-icon>
-                        </v-btn>
-                        <v-btn rounded="0" variant="flat" color="#E0E0E0" @click="applyTag('i')">
-                            <v-icon>mdi-format-italic</v-icon>
-                        </v-btn>
-                        <v-btn rounded="0" variant="flat" color="#E0E0E0" @click="applyTag('u')">
-                            <v-icon>mdi-format-underline</v-icon>
-                        </v-btn>
-                        <v-btn rounded="0" variant="flat" color="#E0E0E0" @click="applyLink()">
-                            <v-icon>mdi-link</v-icon>
-                        </v-btn>
-                    </v-col>
+                    </v-col> -->
                 </v-row>
 
                 <v-row>
                     <v-col cols="12" md="12">
-                        <v-textarea
-                        ref="textarea"
-                        v-model="text"
-                        label="Texto"
-                        placeholder="Escreva seu texto..."
-                        variant="outlined"
-                        density="compact"
-                        counter
-                        rows="15"
-                        append-inner-icon="mdi mdi-format-text"/>
+                        <div id="editor-container" style="height: 200px;"></div>
                     </v-col>
                 </v-row>
 
-                <v-row>
+                <!-- <v-row>
                     <v-col cols="12" md="3">
                         <v-text-field
                         label="Slug"
@@ -90,12 +73,13 @@
                         density="compact"
                         append-inner-icon="mdi mdi-format-text"/>
                     </v-col>
-                </v-row>
+                </v-row> -->
 
                 <v-card-actions>
                     <v-btn
                     variant="elevated"
-                    color="primary">
+                    color="primary"
+                    @click="exibirTextoNoConsole()">
                         <v-icon class="mr-1">mdi mdi-content-save</v-icon>
                         Criar publicação
                     </v-btn>
@@ -106,56 +90,71 @@
 </template>
 
 <script setup>
-import router from "@/router";
-import { ref } from "vue";
+import { ref, onMounted } from 'vue';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 
-// Data
-const text = ref('');
+const form = ref({
+    titulo: "",
+    categoria: "",
+    texto: "",
+    tipo: "",
+    data_publicacao: "",
+    status_publicacao: "",
+    slug: "",
+});
+const items = ref([
+    {descricao: "PUBLICADO", status: "true"},
+    {descricao: "A PUBLICAR", status: "false"},
+])
+// Reactive state
+const content = ref('');
 
-// Refs
-const textarea = ref(null);
-
-// Methods
-const applyTag = (tag) => {
-    const textareaEl = textarea.value.$el.querySelector('textarea');
-    const start = textareaEl.selectionStart;
-    const end = textareaEl.selectionEnd;
-    
-    const before = text.value.substring(0, start);
-    const after = text.value.substring(end);
-    const inside = text.value.substring(start, end);
-
-    text.value = `${before}<${tag}>${inside}</${tag}>${after}`;
-
-    // Reposiciona o cursor dentro da tag inserida
-    setTimeout(() => {
-        const cursorPosition = start + tag.length + 2; // Posição do cursor dentro da tag
-        textareaEl.setSelectionRange(cursorPosition, cursorPosition);
-        textareaEl.focus();
-    }, 0);
+// Event handlers using Composition API
+const onEditorBlur = (quill) => {
+    console.log('editor blur!', quill);
 };
 
-const applyLink = () => {
-    const url = prompt('Digite a URL do link:');
-    if (url) {
-        applyTag(`a href="${url}"`);
-    }
+const onEditorFocus = (quill) => {
+    console.log('editor focus!', quill);
 };
 
-const applyBold = () => {
-    console.log('bold');
+const onEditorReady = (quill) => {
+    console.log('editor ready!', quill);
 };
 
-const applyItalic = () => {
-    console.log('bold');
+const onEditorChange = (quill, html, text) => {
+    console.log('editor change!', quill, html, text);
+    content.value = html;
 };
 
-const applyUnderline = () => {
-    console.log('bold');
-};
+const exibirTextoNoConsole = () => {
+    form.value.texto = content.value;
+    form.value.slug = form.value.titulo;
+    form.value.tipo = 'site';
+    console.log(form.value);
+}
 
-// const applyLink = () => {
-//     console.log('bold');
-// };
+onMounted(() => {
+    const quill = new Quill('#editor-container', {
+        theme: 'snow'
+    });
+
+    quill.on('editor-change', () => {
+        const html = quill.root.innerHTML;
+        const text = quill.getText();
+        onEditorChange(quill, html, text);
+    });
+
+    quill.on('selection-change', (range) => {
+        if (range === null) {
+            onEditorBlur(quill);
+        } else {
+            onEditorFocus(quill);
+        }
+    });
+
+    onEditorReady(quill);
+});
 
 </script>
