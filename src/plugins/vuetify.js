@@ -7,6 +7,7 @@
 // Styles
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
+import { pt } from 'vuetify/locale'
 
 // Composables
 import { createVuetify} from 'vuetify'
@@ -60,4 +61,8 @@ export default createVuetify({
         temaPadraoClaro,
     },
   },
+  locale:{
+    locale:'pt',
+    messages:{pt}
+  }
 })
