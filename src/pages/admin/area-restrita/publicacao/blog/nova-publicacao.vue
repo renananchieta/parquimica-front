@@ -1,8 +1,8 @@
 <template>
     <v-card class="ma-2">
-        <v-card-title>Editar uma publicação - Site</v-card-title>
+        <v-card-title>Criar uma nova publicação - Blog</v-card-title>
         
-        <v-card-subtitle>Edite o texto para uma publicação existente, defina a data a ser postada e até se a publicação está disponível ou não.</v-card-subtitle>
+        <v-card-subtitle>Crie o texto para uma nova publicação, defina a data a ser postada e até se a publicação está disponível ou não.</v-card-subtitle>
         
         <v-divider class="ma-2"></v-divider>
         
@@ -65,9 +65,9 @@
                     variant="elevated"
                     color="primary"
                     :loading="loading"
-                    @click="ajaxAlterarPostagemSite()">
+                    @click="ajaxSalvarPostagemSite()">
                         <v-icon class="mr-1">mdi mdi-content-save</v-icon>
-                        Alterar publicação
+                        Criar publicação
                     </v-btn>
                 </v-card-actions>
             </v-form>
@@ -87,6 +87,7 @@
         :icon="icon"
         size="112"></v-icon>
         <h2 class="text-h5 mb-6">{{ mensagemTitle }}</h2>
+        <!-- <p class="mb-4 text-medium-emphasis text-body-2">{{ mensagemBody }}</p> -->
     
         <v-divider class="mb-4"></v-divider>
         <div class="text-end">
@@ -109,12 +110,9 @@ import { ref, onMounted } from 'vue';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 import api from '@/plugins/api';
-import { useRoute } from 'vue-router';
 
-const route = useRoute();
 const loading = ref(false);
 const form = ref({
-    id: "",
     titulo: "",
     categoria: "",
     texto: "",
@@ -135,49 +133,38 @@ const content = ref('');
 
 // Event handlers using Composition API
 const onEditorBlur = (quill) => {
-    // console.log('editor blur!', quill);
+    console.log('editor blur!', quill);
 };
 
 const onEditorFocus = (quill) => {
-    // console.log('editor focus!', quill);
+    console.log('editor focus!', quill);
 };
 
 const onEditorReady = (quill) => {
-    // console.log('editor ready!', quill);
+    console.log('editor ready!', quill);
 };
 
 const onEditorChange = (quill, html, text) => {
-    // console.log('editor change!', quill, html, text);
+    console.log('editor change!', quill, html, text);
     content.value = html;
 };
 
 /**
  * Methods
  */
-
-const ajaxGetPostagemSite = (id) => {
-    loading.value = true;
-
-    return api.get(`/area-restrita/site/postagem/show/${id}`)
-    .then((response) => {
-        form.value = response.data;
-        form.value.status_publicacao == 'A PUBLICAR' ? form.value.status_publicacao = false : form.value.status_publicacao = true
-        content.value = form.value.texto;
-    })
-    .catch((error) => {
-        console.log(error);
-    })
-    .finally(() => {
-        loading.value = false;
-    });
+const exibirTextoNoConsole = () => {
+    form.value.texto = content.value;
+    form.value.slug = form.value.titulo;
+    form.value.tipo = 'site';
+    console.log(form.value);
 }
 
-const ajaxAlterarPostagemSite = () => {
+const ajaxSalvarPostagemSite = () => {
     loading.value = true;
 
     form.value.texto = content.value;
 
-    api.put(`/area-restrita/site/postagem/update/${form.value.id}`, form.value)
+    api.post('/area-restrita/blog/postagem/store', form.value)
     .then((response) => {
         icon.value = 'mdi-check-circle';
         color.value = 'success';
@@ -193,7 +180,7 @@ const ajaxAlterarPostagemSite = () => {
     })
     .finally(() => {
         loading.value = false;
-    });
+    })
 }
 
 onMounted(() => {
@@ -216,11 +203,6 @@ onMounted(() => {
     });
 
     onEditorReady(quill);
-
-    // Carregar a postagem do site e definir o conteúdo do editor
-    ajaxGetPostagemSite(route.params.id).then(() => {
-        quill.root.innerHTML = form.value.texto; // Define o conteúdo no editor
-    });
 });
 
 </script>

@@ -1,6 +1,6 @@
 <template>
     <v-card class="ma-2">
-        <v-card-title>Editar uma publicação - Site</v-card-title>
+        <v-card-title>Editar uma publicação - Blog</v-card-title>
         
         <v-card-subtitle>Edite o texto para uma publicação existente, defina a data a ser postada e até se a publicação está disponível ou não.</v-card-subtitle>
         
@@ -158,7 +158,7 @@ const onEditorChange = (quill, html, text) => {
 const ajaxGetPostagemSite = (id) => {
     loading.value = true;
 
-    return api.get(`/area-restrita/site/postagem/show/${id}`)
+    return api.get(`/area-restrita/blog/postagem/show/${id}`)
     .then((response) => {
         form.value = response.data;
         form.value.status_publicacao == 'A PUBLICAR' ? form.value.status_publicacao = false : form.value.status_publicacao = true
@@ -177,7 +177,7 @@ const ajaxAlterarPostagemSite = () => {
 
     form.value.texto = content.value;
 
-    api.put(`/area-restrita/site/postagem/update/${form.value.id}`, form.value)
+    api.put(`/area-restrita/blog/postagem/update/${form.value.id}`, form.value)
     .then((response) => {
         icon.value = 'mdi-check-circle';
         color.value = 'success';

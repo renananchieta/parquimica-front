@@ -1,6 +1,6 @@
 <template>
     <v-card class="ma-2">
-        <v-card-title>Pesquisar Publicação</v-card-title>
+        <v-card-title>Pesquisar Publicação - Site</v-card-title>
         
         <v-card-subtitle>Pesquise por uma Publicação</v-card-subtitle>
         

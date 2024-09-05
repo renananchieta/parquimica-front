@@ -1,6 +1,6 @@
 <template>
     <v-card class="ma-2">
-        <v-card-title>Criar uma nova publicação</v-card-title>
+        <v-card-title>Criar uma nova publicação - Site</v-card-title>
         
         <v-card-subtitle>Crie o texto para uma nova publicação, defina a data a ser postada e até se a publicação está disponível ou não.</v-card-subtitle>
         
