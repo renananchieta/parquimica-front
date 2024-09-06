@@ -11,8 +11,8 @@
                             v-model="form.produto"
                             v-model:valor.sync="produtos"
                             :carregando="loading"
-                            item-title="nome"
-                            item-value="id"
+                            item-title="nome_produto"
+                            item-value="codigo_produto"
                             label="Buscar Produto"
                             @pesquisa-autocomplete="getProdutos()"
                             variant="outlined"
@@ -33,7 +33,7 @@
 
             <v-card-title>Dados do Produto:</v-card-title>
 
-            <v-form @submit.prevent="salvarProdutoBaseLocal()">
+            <v-form @submit.prevent="alterarProdutoBaseLocal()">
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="6">
@@ -44,34 +44,90 @@
                             density="compact"/>
                         </v-col>
                         <v-col cols="12" md="6">
-                            <auto-complete-remoto-multiple
+                            <v-text-field
+                            label="Código do Produto"
+                            v-model="formProduto.codigoProduto"
+                            variant="outlined"
+                            density="compact"/>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-autocomplete
+                            :items="produtos"
                             v-model="formProduto.variantes"
-                            v-model:valor.sync="produtos"
-                            :carregando="loading"
-                            item-title="nome"
-                            item-value="id"
-                            label="Variantes do produto"
-                            @pesquisa-autocomplete="getProdutos()"
                             variant="outlined"
                             density="compact"
-                            append-inner-icon="mdi mdi-list-box-outline"
-                        />
+                            item-title="nome_produto"
+                            item-value="codigo_produto"
+                            chips
+                            single-line
+                            closable-chips
+                            multiple
+                            color="primary"
+                            :loading="loading"
+                            label="Variantes">
+                            </v-autocomplete>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-text-field
+                            <v-textarea
                             label="Subtítulo do Produto"
                             v-model="formProduto.subtituloProduto"
                             variant="outlined"
                             density="compact"/>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-text-field
+                            <v-textarea
                             label="Modo de ação"
                             v-model="formProduto.modoAcao"
                             variant="outlined"
                             density="compact"/>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-textarea
+                            label="Recomendacao"
+                            v-model="formProduto.recomendacao"
+                            variant="outlined"
+                            density="compact"/>
+                        </v-col>
+                    </v-row>
+                    
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <v-autocomplete
+                            :items="comboLinha"
+                            v-model="formProduto.linha"
+                            variant="outlined"
+                            density="compact"
+                            item-title="descricao_linha"
+                            item-value="codigo_linha"
+                            chips
+                            single-line
+                            closable-chips
+                            multiple
+                            color="primary"
+                            :loading="loading"
+                            label="Linha">
+                            </v-autocomplete>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-autocomplete
+                            :items="comboFuncao"
+                            v-model="formProduto.funcao"
+                            variant="outlined"
+                            density="compact"
+                            item-title="descricao_funcao"
+                            item-value="codigo_funcao"
+                            chips
+                            single-line
+                            closable-chips
+                            multiple
+                            color="primary"
+                            :loading="loading"
+                            label="Função">
+                            </v-autocomplete>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -83,13 +139,24 @@
                             density="compact"
                             show-size
                             small-sheets
-                            accept=".pdf"/>
+                            @update:modelValue="onFileChange()"
+                            />
                             <!-- append-inner-icon="mdi mdi-eye" -->
                             <!-- @click:append="verArquivo()" -->
                         </v-col>
+                        <!-- <v-col cols="12" md="6">
+                            <v-text-field
+                            label="Slug"
+                            v-model="formProduto.slug"
+                            variant="outlined"
+                            density="compact"/>
+                        </v-col> -->
                     </v-row>
                     <v-card-actions>
-                        <v-btn color="primary" variant="elevated" type="submit">
+                        <v-btn 
+                        color="primary" 
+                        variant="elevated" 
+                        @click="salvarProdutoBaseLocal()">
                             <v-icon>mdi mdi-mdi mdi-content-save-outline</v-icon>Salvar
                         </v-btn>
                     </v-card-actions>
@@ -145,26 +212,34 @@
 </template>
 
 <script setup>
-import router from "@/router";
 import { ref } from "vue";
 import AutoCompleteRemoto from "@/components/AutoCompleteRemoto.vue";
-import AutoCompleteRemotoMultiple from "@/components/AutoCompleteRemotoMultiple.vue";
 import api from "@/plugins/api";
+import { onMounted } from "vue";
 
 /**
  * Data
  */
 const loading = ref(false);
 const produtos = ref([]);
+const comboLinha = ref([]);
+const comboFuncao = ref([]);
+const codigoProduto = ref(0);
 const form = ref({
     produto: ""
 });
 const formProduto = ref({
+    id: 0,
     nomeProduto: "",
     codigoProduto: null,
     subtituloProduto: "",
+    recomendacao: "",
     modoAcao: "",
     variantes: [],
+    ativo_site: 1,
+    slug: "",
+    linha: [],
+    funcao: [],
     arquivo: []
 });
 const dialog = ref(false);
@@ -173,6 +248,11 @@ const mensagem = ref("");
 /**
  * Methods
  */
+const onFileChange = () => {
+    console.log(formProduto.value.arquivo);
+    
+}
+
 const getProdutos = (pesquisa) => {
   if (form.value.produto) {
     return;
@@ -192,14 +272,19 @@ const getProdutos = (pesquisa) => {
 const buscarProduto = () => {
     loading.value = true;
     api
-      .get(`/firebird/literatura/${form.value.produto}`)
+      .get(`/area-restrita/produto/${form.value.produto}`)
       .then((response) => {
-        console.log(response.data);
-        console.log(response.data[0]);
-        console.log(response.data[0]['detalhes'][0]['LID_DSC']);
-        formProduto.value.nomeProduto = response.data[0]['PRD_NOME'];
-        formProduto.value.subtituloProduto = response.data[0]['PRD_LIT_DSC'];
-        formProduto.value.modoAcao = response.data[0]['detalhes'][0]['LID_DSC'];
+        formProduto.value.id = response.data[0].id;
+        formProduto.value.nomeProduto = response.data[0].nome_produto;
+        formProduto.value.codigoProduto = response.data[0].codigo_produto;
+        formProduto.value.subtituloProduto = response.data[0].subtitulo;
+        formProduto.value.modoAcao = response.data[0].modo_acao;
+        formProduto.value.variantes = response.data[0].variantes;
+        formProduto.value.recomendacao = response.data[0].recomendacao;
+        formProduto.value.slug = response.data[0].slug;
+        formProduto.value.linha = response.data[0].linhas;
+        formProduto.value.funcao = response.data[0].funcoes;
+        codigoProduto.value = response.data[0].codigo_produto;
       })
       .catch((error) => {
         console.log(error);
@@ -209,57 +294,172 @@ const buscarProduto = () => {
       })
 }
 
-// const salvarProdutoBaseLocal = () => {
-//     mensagem.value = "Aguarde. Estamos processando";
-//     loading.value = true;
-//     dialog.value = true;
-
-//     formProduto.value.codigoProduto = form.value.produto;
-//     // formProduto.value.variantes = formProduto.value.variantes.map(id => ({ id }));
-//     let formTratado = {
-//         nomeProduto: formProduto.value.nomeProduto,
-//         codigoProduto: formProduto.value.codigoProduto,
-//         subtituloProduto: formProduto.value.subtituloProduto,
-//         modoAcao: formProduto.value.modoAcao,
-//         variantes: formProduto.value.variantes.map(id => ({ id }))
-//     }
-
-//     api.post('/area-restrita/produtos', formTratado)
-//     .then((response) => {
-//         loading.value = false;
-//         mensagem.value = response.data.message;
-
-//         setTimeout(() => {
-//             dialog.value = false;
-//         }, 2500);
-//     })
-//     .catch(() => {
-//         mensagem.value = "Não foi possível salvar o produto. Tente novamente.";
-//         loading.value = false;
-//         setTimeout(() => {
-//             dialog.value = false;
-//         }, 2500);
-//     })
-// }
-
 const salvarProdutoBaseLocal = () => {
+    mensagem.value = "Aguarde. Estamos processando";
+    loading.value = true;
+    dialog.value = true;
+
+    const payload = {
+        nomeProduto: formProduto.value.nomeProduto,
+        codigoProduto: formProduto.value.codigoProduto,
+        subtituloProduto: formProduto.value.subtituloProduto,
+        modoAcao: formProduto.value.modoAcao,
+
+        variantes: formProduto.value.id == 0 ? formProduto.value.variantes.map(v => ({ codigo_produto: v })) : formProduto.value.variantes.map(v => ({ codigo_produto: v.codigo_produto })),
+        
+        slug: formProduto.value.nomeProduto,
+        ativo_site: formProduto.value.ativo_site,
+        recomendacao: formProduto.value.recomendacao,
+        linha: formProduto.value.id == 0 ? formProduto.value.linha.map(l => ({ codigo_linha: l })) : formProduto.value.linha.map(l => ({ codigo_linha: l.codigo_linha })),
+        funcao: formProduto.value.id == 0 ? formProduto.value.funcao.map(f => ({ codigo_funcao: f })) : formProduto.value.funcao.map(f => ({ codigo_funcao: f.codigo_funcao }))
+    };
+
+    api.post('/area-restrita/produtos', payload)
+        .then((response) => {
+            loading.value = false;
+            mensagem.value = response.data.message;
+
+            setTimeout(() => {
+                dialog.value = false;
+            }, 2500);
+        })
+        .catch((error) => {
+            mensagem.value = error.response?.data?.message || "Não foi possível salvar o produto. Tente novamente.";
+            loading.value = false;
+            setTimeout(() => {
+                dialog.value = false;
+            }, 2500);
+        })
+        .finally(() => {
+            loading.value = false;
+        });
+}
+
+const alterarProdutoBaseLocal = () => {
+    mensagem.value = "Aguarde. Estamos processando";
+    loading.value = true;
+    dialog.value = true;
+
+    const payload = {
+        id: formProduto.value.id,
+        nomeProduto: formProduto.value.nomeProduto,
+        codigoProduto: formProduto.value.codigoProduto,
+        subtituloProduto: formProduto.value.subtituloProduto,
+        modoAcao: formProduto.value.modoAcao,
+        variantes: formProduto.value.variantes.map(v => ({ codigo_produto: v.codigo_produto })),
+        slug: formProduto.value.nomeProduto,
+        ativo_site: formProduto.value.ativo_site,
+        recomendacao: formProduto.value.recomendacao,
+        linha: formProduto.value.linha.map(l => ({ codigo_linha: l.codigo_linha })),
+        funcao: formProduto.value.funcao.map(f => ({ codigo_funcao: f.codigo_funcao }))
+    };
+
+    api.put(`/area-restrita/produto/${codigoProduto.value}/update`, payload)
+    .then((response) => {
+        loading.value = false;
+        mensagem.value = response.data.message;
+
+        setTimeout(() => {
+            dialog.value = false;
+        }, 2500);
+    })
+    .catch((error) => {
+        mensagem.value = "Não foi possível salvar o produto. Tente novamente.";
+        loading.value = false;
+        setTimeout(() => {
+            dialog.value = false;
+        }, 2500);
+    })
+    .finally(() => {
+        loading.value = false;
+    })
+}
+
+const salvarProdutoBaseLocal2 = () => {
     mensagem.value = "Aguarde. Estamos processando";
     loading.value = true;
     dialog.value = true;
 
     const formData = new FormData();
     formData.append("nomeProduto", formProduto.value.nomeProduto);
-    formData.append("codigoProduto", form.value.produto);
+    formData.append("codigoProduto", formProduto.value.codigoProduto);
     formData.append("subtituloProduto", formProduto.value.subtituloProduto);
+    formData.append("variantes", formProduto.value.variantes);
     formData.append("modoAcao", formProduto.value.modoAcao);
-    formData.append("arquivo", formProduto.value.arquivo[0]); // Supondo que o arquivo PDF esteja em `formProduto.value.arquivo`
-    
-    // Adiciona as variantes
-    formProduto.value.variantes.forEach((id, index) => {
-        formData.append(`variantes[${index}]`, id);
+    formProduto.value.linha.forEach((item, index) => {
+        formData.append(`linha[${index}][codigo_linha]`);
     });
+    formProduto.value.funcao.forEach((item, index) => {
+        formData.append(`funcao[${index}][codigo_funcao]`);
+    });
+    formData.append("slug", formProduto.value.slug);
+    formData.append("recomendacao", formProduto.value.recomendacao);
+    formData.append("arquivo", formProduto.value.arquivo[0]); // Supondo que o arquivo PDF esteja em `formProduto.value.arquivo`
 
     api.post('/area-restrita/produtos', formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
+    .then((response) => {
+        loading.value = false;
+        mensagem.value = response.data.message;
+
+        setTimeout(() => {
+            dialog.value = false;
+        }, 2500);
+    })
+    .catch(() => {
+        mensagem.value = "Não foi possível salvar o produto. Tente novamente.";
+        loading.value = false;
+        setTimeout(() => {
+            dialog.value = false;
+        }, 2500);
+    })
+    .finally(() => {
+        loading.value = false;
+    })
+}
+
+const combos = () => {
+    loading.value = true;
+
+    api.get('/area-restrita/combos/linhas-funcoes')
+    .then((response) => {
+        console.log(response.data);
+        comboFuncao.value = response.data.funcoes;
+        comboLinha.value = response.data.linhas;
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+    .finally(() => {
+        loading.value = false;
+    })
+}
+
+const alterarProdutoBaseLocal2 = () => {
+    mensagem.value = "Aguarde. Estamos processando";
+    loading.value = true;
+    dialog.value = true;
+
+    const formData = new FormData();
+    formData.append("nomeProduto", formProduto.value.nomeProduto);
+    formData.append("codigoProduto", formProduto.value.codigoProduto);
+    formData.append("subtituloProduto", formProduto.value.subtituloProduto);
+    formData.append("variantes", formProduto.value.variantes);
+    formData.append("modoAcao", formProduto.value.modoAcao);
+    formProduto.value.linha.forEach((item, index) => {
+        formData.append(`linha[${index}][codigo_linha]`, parseInt(item.codigo_linha));
+    });
+    formProduto.value.funcao.forEach((item, index) => {
+        formData.append(`funcao[${index}][codigo_funcao]`, parseInt(item.codigo_funcao));
+    });
+    formData.append("slug", formProduto.value.slug);
+    formData.append("recomendacao", formProduto.value.recomendacao);
+    formData.append("arquivo", formProduto.value.arquivo[0]); // Supondo que o arquivo PDF esteja em `formProduto.value.arquivo`
+
+    api.put(`/area-restrita/produto/${codigoProduto.value}/update`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
@@ -280,5 +480,13 @@ const salvarProdutoBaseLocal = () => {
         }, 2500);
     });
 }
+
+/**
+ * Hooks
+ */
+onMounted(() => {
+    combos();
+    getProdutos();
+})
 
 </script>

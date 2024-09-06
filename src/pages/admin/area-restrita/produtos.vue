@@ -138,7 +138,6 @@
                             variant="outlined"
                             density="compact"
                             show-size
-                            small-sheets
                             @update:modelValue="onFileChange()"
                             />
                             <!-- append-inner-icon="mdi mdi-eye" -->
@@ -250,7 +249,6 @@ const mensagem = ref("");
  */
 const onFileChange = () => {
     console.log(formProduto.value.arquivo);
-    
 }
 
 const getProdutos = (pesquisa) => {
@@ -304,9 +302,7 @@ const salvarProdutoBaseLocal = () => {
         codigoProduto: formProduto.value.codigoProduto,
         subtituloProduto: formProduto.value.subtituloProduto,
         modoAcao: formProduto.value.modoAcao,
-
         variantes: formProduto.value.id == 0 ? formProduto.value.variantes.map(v => ({ codigo_produto: v })) : formProduto.value.variantes.map(v => ({ codigo_produto: v.codigo_produto })),
-        
         slug: formProduto.value.nomeProduto,
         ativo_site: formProduto.value.ativo_site,
         recomendacao: formProduto.value.recomendacao,
@@ -314,7 +310,30 @@ const salvarProdutoBaseLocal = () => {
         funcao: formProduto.value.id == 0 ? formProduto.value.funcao.map(f => ({ codigo_funcao: f })) : formProduto.value.funcao.map(f => ({ codigo_funcao: f.codigo_funcao }))
     };
 
-    api.post('/area-restrita/produtos', payload)
+    const formData = new FormData();
+    formData.append("nomeProduto", payload.nomeProduto);
+    formData.append("codigoProduto", payload.codigoProduto);
+    formData.append("subtituloProduto", payload.subtituloProduto);
+    formData.append("modoAcao", payload.modoAcao);
+    formData.append("slug", payload.slug);
+    formData.append("ativo_site", payload.ativo_site);
+    formData.append("recomendacao", payload.recomendacao);
+    payload.linha.forEach((item, index) => {
+        formData.append(`linha[${index}][codigo_linha]`, item.codigo_linha);
+    });
+    payload.funcao.forEach((item, index) => {
+        formData.append(`funcao[${index}][codigo_funcao]`, item.codigo_funcao);
+    });
+    payload.variantes.forEach((item, index) => {
+        formData.append(`variantes[${index}][codigo_produto]`, item.codigo_produto);
+    });
+    formData.append("arquivo", formProduto.value.arquivo[0]);
+
+    api.post('/area-restrita/produtos', formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
         .then((response) => {
             loading.value = false;
             mensagem.value = response.data.message;
@@ -426,7 +445,6 @@ const combos = () => {
 
     api.get('/area-restrita/combos/linhas-funcoes')
     .then((response) => {
-        console.log(response.data);
         comboFuncao.value = response.data.funcoes;
         comboLinha.value = response.data.linhas;
     })
