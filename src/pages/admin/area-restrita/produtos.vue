@@ -140,16 +140,7 @@
                             show-size
                             @update:modelValue="onFileChange()"
                             />
-                            <!-- append-inner-icon="mdi mdi-eye" -->
-                            <!-- @click:append="verArquivo()" -->
                         </v-col>
-                        <!-- <v-col cols="12" md="6">
-                            <v-text-field
-                            label="Slug"
-                            v-model="formProduto.slug"
-                            variant="outlined"
-                            density="compact"/>
-                        </v-col> -->
                     </v-row>
                     <v-card-actions>
                         <v-btn 
@@ -307,7 +298,8 @@ const salvarProdutoBaseLocal = () => {
         ativo_site: formProduto.value.ativo_site,
         recomendacao: formProduto.value.recomendacao,
         linha: formProduto.value.id == 0 ? formProduto.value.linha.map(l => ({ codigo_linha: l })) : formProduto.value.linha.map(l => ({ codigo_linha: l.codigo_linha })),
-        funcao: formProduto.value.id == 0 ? formProduto.value.funcao.map(f => ({ codigo_funcao: f })) : formProduto.value.funcao.map(f => ({ codigo_funcao: f.codigo_funcao }))
+        funcao: formProduto.value.id == 0 ? formProduto.value.funcao.map(f => ({ codigo_funcao: f })) : formProduto.value.funcao.map(f => ({ codigo_funcao: f.codigo_funcao })),
+        arquivo: formProduto.value.arquivo
     };
 
     const formData = new FormData();
@@ -327,7 +319,7 @@ const salvarProdutoBaseLocal = () => {
     payload.variantes.forEach((item, index) => {
         formData.append(`variantes[${index}][codigo_produto]`, item.codigo_produto);
     });
-    formData.append("arquivo", formProduto.value.arquivo[0]);
+    formData.append("arquivo", payload.arquivo);
 
     api.post('/area-restrita/produtos', formData, {
         headers: {
