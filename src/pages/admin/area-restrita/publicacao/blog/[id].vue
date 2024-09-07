@@ -56,7 +56,7 @@
 
                 <v-row>
                     <v-col cols="12" md="12">
-                        <div id="editor-container" style="height: 200px;"></div>
+                        <div id="editor-container" style="height: 50vh;"></div>
                     </v-col>
                 </v-row>
 
@@ -197,28 +197,36 @@ const ajaxAlterarPostagemSite = () => {
 }
 
 onMounted(() => {
+    const toolbarOptions = [
+        [{ 'font': [] }],                          // Font family dropdown
+        [{ 'size': ['small', false, 'large', 'huge'] }], // Font size
+        ['bold', 'italic', 'underline', 'strike'], // Formatting buttons
+        [{ 'color': [] }, { 'background': [] }],   // Text color and background color
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],  // Ordered and bullet lists
+        [{ 'align': [] }],                         // Text alignment
+        [{ 'script': 'sub'}, { 'script': 'super' }],   // Subscript and superscript
+        ['blockquote', 'code-block'],              // Blockquote and code block
+        [{ 'indent': '-1'}, { 'indent': '+1' }],   // Indentation
+        [{ 'direction': 'rtl' }],                  // Text direction
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // Header sizes
+        ['link', 'image', 'video'],                // Insert link, image, and video
+        ['clean']                                  // Remove formatting
+    ];
+
     const quill = new Quill('#editor-container', {
-        theme: 'snow'
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
     });
 
     quill.on('editor-change', () => {
         const html = quill.root.innerHTML;
-        const text = quill.getText();
-        onEditorChange(quill, html, text);
+        content.value = html;
     });
 
-    quill.on('selection-change', (range) => {
-        if (range === null) {
-            onEditorBlur(quill);
-        } else {
-            onEditorFocus(quill);
-        }
-    });
-
-    onEditorReady(quill);
-
-    // Carregar a postagem do site e definir o conteúdo do editor
-    ajaxGetPostagemSite(route.params.id).then(() => {
+        // Carregar a postagem do site e definir o conteúdo do editor
+        ajaxGetPostagemSite(route.params.id).then(() => {
         quill.root.innerHTML = form.value.texto; // Define o conteúdo no editor
     });
 });

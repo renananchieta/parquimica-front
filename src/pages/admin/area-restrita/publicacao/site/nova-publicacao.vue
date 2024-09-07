@@ -42,7 +42,7 @@
                     </v-col>
                 </v-row>
 
-                <v-row >
+                <v-row>
                     <v-col cols="12" md="12">
                         <v-text-field
                         v-model="form.titulo"
@@ -56,7 +56,7 @@
 
                 <v-row>
                     <v-col cols="12" md="12">
-                        <div id="editor-container" style="height: 200px;"></div>
+                        <div id="editor-container" style="height: 50vh;"></div>
                     </v-col>
                 </v-row>
 
@@ -87,7 +87,6 @@
         :icon="icon"
         size="112"></v-icon>
         <h2 class="text-h5 mb-6">{{ mensagemTitle }}</h2>
-        <!-- <p class="mb-4 text-medium-emphasis text-body-2">{{ mensagemBody }}</p> -->
     
         <v-divider class="mb-4"></v-divider>
         <div class="text-end">
@@ -131,34 +130,9 @@ const mensagemTitle = ref('');
 // Reactive state
 const content = ref('');
 
-// Event handlers using Composition API
-const onEditorBlur = (quill) => {
-    console.log('editor blur!', quill);
-};
-
-const onEditorFocus = (quill) => {
-    console.log('editor focus!', quill);
-};
-
-const onEditorReady = (quill) => {
-    console.log('editor ready!', quill);
-};
-
-const onEditorChange = (quill, html, text) => {
-    console.log('editor change!', quill, html, text);
-    content.value = html;
-};
-
 /**
  * Methods
  */
-const exibirTextoNoConsole = () => {
-    form.value.texto = content.value;
-    form.value.slug = form.value.titulo;
-    form.value.tipo = 'site';
-    console.log(form.value);
-}
-
 const ajaxSalvarPostagemSite = () => {
     loading.value = true;
 
@@ -184,25 +158,33 @@ const ajaxSalvarPostagemSite = () => {
 }
 
 onMounted(() => {
+    const toolbarOptions = [
+        [{ 'font': [] }],                          // Font family dropdown
+        [{ 'size': ['small', false, 'large', 'huge'] }], // Font size
+        ['bold', 'italic', 'underline', 'strike'], // Formatting buttons
+        [{ 'color': [] }, { 'background': [] }],   // Text color and background color
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],  // Ordered and bullet lists
+        [{ 'align': [] }],                         // Text alignment
+        [{ 'script': 'sub'}, { 'script': 'super' }],   // Subscript and superscript
+        ['blockquote', 'code-block'],              // Blockquote and code block
+        [{ 'indent': '-1'}, { 'indent': '+1' }],   // Indentation
+        [{ 'direction': 'rtl' }],                  // Text direction
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // Header sizes
+        ['link', 'image', 'video'],                // Insert link, image, and video
+        ['clean']                                  // Remove formatting
+    ];
+
     const quill = new Quill('#editor-container', {
-        theme: 'snow'
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
     });
 
     quill.on('editor-change', () => {
         const html = quill.root.innerHTML;
-        const text = quill.getText();
-        onEditorChange(quill, html, text);
+        content.value = html;
     });
-
-    quill.on('selection-change', (range) => {
-        if (range === null) {
-            onEditorBlur(quill);
-        } else {
-            onEditorFocus(quill);
-        }
-    });
-
-    onEditorReady(quill);
 });
 
 </script>
