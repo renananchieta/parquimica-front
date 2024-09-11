@@ -313,7 +313,7 @@ const getProdutos = (pesquisa) => {
 const buscarProduto = () => {
     loading.value = true;
 
-    router.push(`/admin/area-restrita/produtos/cod-${form.value.produto}`);
+    router.push(`/admin/area-restrita/produtos/${form.value.produto}`);
 };
 
 const ajaxGetProduto = async (codigo_produto) => {
@@ -528,6 +528,6 @@ onMounted(() => {
         quillRecomendacao.root.innerHTML = formProduto.value.recomendacao;
         quillModoAcao.root.innerHTML = formProduto.value.modoAcao;
     });
-});
+})
 
 </script>
