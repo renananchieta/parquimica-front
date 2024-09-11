@@ -5,7 +5,7 @@
             <v-card-subtitle>Alteração de informações de produtos e informações de contato em geral</v-card-subtitle>
 
                 <v-row class="ma-2">
-                    <v-col cols="12" md="3" align-self="align">
+                    <v-col cols="12" md="3">
                         <v-card 
                         elevation="3" 
                         @click="navegarPara('/admin/area-restrita/produtos')">
@@ -17,7 +17,7 @@
                         </v-card>
                     </v-col>
                     
-                    <v-col cols="12" md="3" align-self="align">
+                    <v-col cols="12" md="3">
                         <v-card 
                         elevation="3" 
                         @click="navegarPara('/admin/area-restrita/configuracao-geral')">
@@ -29,7 +29,7 @@
                         </v-card>
                     </v-col>
 
-                    <v-col cols="12" md="3" align-self="align">
+                    <v-col cols="12" md="3">
                         <v-card 
                         elevation="3" 
                         @click="navegarPara('/admin/area-restrita/publicacao/site')">
@@ -41,7 +41,7 @@
                         </v-card>
                     </v-col>
 
-                    <v-col cols="12" md="3" align-self="align">
+                    <v-col cols="12" md="3">
                         <v-card 
                         elevation="3" 
                         @click="navegarPara('/admin/area-restrita/publicacao/blog')">

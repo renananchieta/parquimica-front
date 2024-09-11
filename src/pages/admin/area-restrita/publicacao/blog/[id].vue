@@ -158,7 +158,7 @@ const onEditorChange = (quill, html, text) => {
 const ajaxGetPostagemSite = (id) => {
     loading.value = true;
 
-    return api.get(`/area-restrita/blog/postagem/show/${id}`)
+    api.get(`/area-restrita/blog/postagem/show/${id}`)
     .then((response) => {
         form.value = response.data;
         form.value.status_publicacao == 'A PUBLICAR' ? form.value.status_publicacao = false : form.value.status_publicacao = true
@@ -225,8 +225,8 @@ onMounted(() => {
         content.value = html;
     });
 
-        // Carregar a postagem do site e definir o conteúdo do editor
-        ajaxGetPostagemSite(route.params.id).then(() => {
+    // Carregar a postagem do site e definir o conteúdo do editor
+    ajaxGetPostagemSite(route.params.id).then(() => {
         quill.root.innerHTML = form.value.texto; // Define o conteúdo no editor
     });
 });

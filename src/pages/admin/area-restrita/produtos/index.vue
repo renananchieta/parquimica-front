@@ -51,7 +51,7 @@
                             density="compact"/>
                         </v-col>
                         <v-col cols="12" md="12">
-                            <v-autocomplete
+                            <!-- <v-autocomplete
                             :items="produtos"
                             v-model="formProduto.variantes"
                             variant="outlined"
@@ -66,10 +66,16 @@
                             :loading="loading"
                             label="Variantes"
                             @update:model-value="monitoramento()">
-                            </v-autocomplete>
+                            </v-autocomplete> -->
+                            <v-text-field
+                            v-model="formProduto.variantes"
+                            variant="outlined"
+                            density="compact"
+                            label="Variantes"
+                            />
                         </v-col>
                     </v-row>
-                    <v-row>
+                    <!-- <v-row>
                         <v-col cols="12" md="12">
                             <v-textarea
                             label="Subtítulo do Produto"
@@ -84,8 +90,31 @@
                             variant="outlined"
                             density="compact"/>
                         </v-col>
-                    </v-row>
+                    </v-row> -->
+
                     <v-row>
+                        <v-col cols="12" md="12">
+                            <v-label>Subtítulo do produto: </v-label>
+                            <div id="editor-container-subtitulo" style="height: 25vh;"></div>
+                        </v-col>
+                    </v-row>
+
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-label>Modo de Ação: </v-label>
+                            <div id="editor-container-modo-acao" style="height: 25vh;"></div>
+                        </v-col>
+                    </v-row>
+
+                    
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-label>Recomendação: </v-label>
+                            <div id="editor-container-recomendacao" style="height: 25vh;"></div>
+                        </v-col>
+                    </v-row>
+
+                    <!-- <v-row>
                         <v-col cols="12" md="12">
                             <v-textarea
                             label="Recomendacao"
@@ -93,7 +122,7 @@
                             variant="outlined"
                             density="compact"/>
                         </v-col>
-                    </v-row>
+                    </v-row> -->
                     
                     <v-row>
                         <v-col cols="12" md="6">
@@ -105,7 +134,6 @@
                             item-title="descricao_linha"
                             item-value="codigo_linha"
                             chips
-                            single-line
                             closable-chips
                             multiple
                             color="primary"
@@ -122,7 +150,6 @@
                             item-title="descricao_funcao"
                             item-value="codigo_funcao"
                             chips
-                            single-line
                             closable-chips
                             multiple
                             color="primary"
@@ -221,10 +248,14 @@ import { ref } from "vue";
 import AutoCompleteRemoto from "@/components/AutoCompleteRemoto.vue";
 import api from "@/plugins/api";
 import { onMounted } from "vue";
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
+import { useRouter } from "vue-router";
 
 /**
  * Data
  */
+const router = useRouter();
 const loading = ref(false);
 const produtos = ref([]);
 const comboLinha = ref([]);
@@ -240,7 +271,7 @@ const formProduto = ref({
     subtituloProduto: "",
     recomendacao: "",
     modoAcao: "",
-    variantes: [],
+    variantes: "",
     ativo_site: 1,
     slug: "",
     linha: [],
@@ -250,10 +281,70 @@ const formProduto = ref({
 const dialog = ref(false);
 const mensagem = ref("");
 const imageSrc = ref('');
+const contentSubtitulo = ref('');
+const contentModoAcao = ref('');
+const contentRecomendacao = ref('');
 
 /**
  * Methods
  */
+
+const initialization = () => {
+    const toolbarOptions = [
+        [{ 'font': [] }],                          // Font family dropdown
+        [{ 'size': ['small', false, 'large', 'huge'] }], // Font size
+        ['bold', 'italic', 'underline', 'strike'], // Formatting buttons
+        [{ 'color': [] }, { 'background': [] }],   // Text color and background color
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],  // Ordered and bullet lists
+        [{ 'align': [] }],                         // Text alignment
+        [{ 'script': 'sub'}, { 'script': 'super' }],   // Subscript and superscript
+        ['blockquote', 'code-block'],              // Blockquote and code block
+        [{ 'indent': '-1'}, { 'indent': '+1' }],   // Indentation
+        [{ 'direction': 'rtl' }],                  // Text direction
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // Header sizes
+        ['link', 'image', 'video'],                // Insert link, image, and video
+        ['clean']                                  // Remove formatting
+    ];
+
+    const quillSubtitulo = new Quill('#editor-container-subtitulo', {
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
+    });
+
+    quillSubtitulo.on('editor-change', () => {
+        const html = quillSubtitulo.root.innerHTML;
+        contentSubtitulo.value = html;
+        console.log(contentSubtitulo.value);
+        
+    });
+
+    const quillModoAcao = new Quill('#editor-container-modo-acao', {
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
+    });
+
+    quillModoAcao.on('editor-change', () => {
+        const html = quillModoAcao.root.innerHTML;
+        contentModoAcao.value = html;
+    });
+
+    const quillRecomendacao = new Quill('#editor-container-recomendacao', {
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
+    });
+
+    quillRecomendacao.on('editor-change', () => {
+        const html = quillRecomendacao.root.innerHTML;
+        contentRecomendacao.value = html;
+    });
+}
+
 const onFileChange = () => {
     console.log(formProduto.value.arquivo);
 }
@@ -276,99 +367,19 @@ const getProdutos = (pesquisa) => {
 
 const buscarProduto = () => {
     loading.value = true;
-    api
-      .get(`/area-restrita/produto/${form.value.produto}`)
-      .then((response) => {
-        console.log(response.data);
-        
-        formProduto.value.id = response.data[0].id;
-        formProduto.value.nomeProduto = response.data[0].nome_produto;
-        formProduto.value.codigoProduto = response.data[0].codigo_produto;
-        formProduto.value.subtituloProduto = response.data[0].subtitulo;
-        formProduto.value.modoAcao = response.data[0].modo_acao;
-        formProduto.value.variantes = response.data[0].variantes;
-        formProduto.value.recomendacao = response.data[0].recomendacao;
-        formProduto.value.slug = response.data[0].slug;
-        formProduto.value.linha = response.data[0].linhas;
-        formProduto.value.funcao = response.data[0].funcoes;
-        codigoProduto.value = response.data[0].codigo_produto;
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        loading.value = false;
-      })
-}
 
-const salvarProdutoBaseLocal2 = () => {
-    mensagem.value = "Aguarde. Estamos processando";
-    loading.value = true;
-    dialog.value = true;
-
-    const payload = {
-        nomeProduto: formProduto.value.nomeProduto,
-        codigoProduto: formProduto.value.codigoProduto,
-        subtituloProduto: formProduto.value.subtituloProduto,
-        modoAcao: formProduto.value.modoAcao,
-        slug: formProduto.value.nomeProduto,
-        ativo_site: formProduto.value.ativo_site,
-        recomendacao: formProduto.value.recomendacao,
-        variantes: Array.isArray(formProduto.value.variantes) ? formProduto.value.variantes.map(v => v.codigo_produto || v) : [],
-        linha: Array.isArray(formProduto.value.linha) ? formProduto.value.linha.map(l => l.codigo_linha || l) : [],
-        funcao: Array.isArray(formProduto.value.funcao) ? formProduto.value.funcao.map(f => f.codigo_funcao || f) : [],
-        arquivo: formProduto.value.arquivo
-    };
-
-    const formData = new FormData();
-    formData.append("nomeProduto", payload.nomeProduto);
-    formData.append("codigoProduto", payload.codigoProduto);
-    formData.append("subtituloProduto", payload.subtituloProduto);
-    formData.append("modoAcao", payload.modoAcao);
-    formData.append("slug", payload.slug);
-    formData.append("ativo_site", payload.ativo_site);
-    formData.append("recomendacao", payload.recomendacao);
-    payload.linha.forEach((item, index) => {
-        formData.append(`linha[${index}][codigo_linha]`, item.codigo_linha);
-    });
-    payload.funcao.forEach((item, index) => {
-        formData.append(`funcao[${index}][codigo_funcao]`, item.codigo_funcao);
-    });
-    payload.variantes.forEach((item, index) => {
-        formData.append(`variantes[${index}][codigo_produto]`, item.codigo_produto);
-    });
-    formData.append("arquivo", payload.arquivo);
-
-    api.post('/area-restrita/produtos', formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
-    })
-        .then((response) => {
-            loading.value = false;
-            mensagem.value = response.data.message;
-
-            setTimeout(() => {
-                dialog.value = false;
-            }, 2500);
-        })
-        .catch((error) => {
-            mensagem.value = error.response?.data?.message || "Não foi possível salvar o produto. Tente novamente.";
-            loading.value = false;
-            setTimeout(() => {
-                dialog.value = false;
-            }, 2500);
-        })
-        .finally(() => {
-            loading.value = false;
-        });
-}
+    router.push(`/admin/area-restrita/produtos/${form.value.produto}`)
+};
 
 const salvarProdutoBaseLocal = () => {
     mensagem.value = "Aguarde. Estamos processando";
     loading.value = true;
     dialog.value = true;
 
+    formProduto.value.subtituloProduto = contentSubtitulo.value;
+    formProduto.value.recomendacao = contentRecomendacao.value;
+    formProduto.value.modoAcao = contentModoAcao.value;
+
     const payload = {
         nomeProduto: formProduto.value.nomeProduto,
         codigoProduto: formProduto.value.codigoProduto,
@@ -377,10 +388,12 @@ const salvarProdutoBaseLocal = () => {
         slug: formProduto.value.nomeProduto,
         ativo_site: formProduto.value.ativo_site,
         recomendacao: formProduto.value.recomendacao,
+
+        variantes: formProduto.value.variantes,
         // Certifique-se de que variantes, linha e funcao sejam arrays válidos e evite undefined
-        variantes: Array.isArray(formProduto.value.variantes) 
-            ? formProduto.value.variantes.map(v => v.codigo_produto ?? v) 
-            : [],
+        // variantes: Array.isArray(formProduto.value.variantes) 
+        //     ? formProduto.value.variantes.map(v => v.codigo_produto ?? v) 
+        //     : [],
         linha: Array.isArray(formProduto.value.linha) 
             ? formProduto.value.linha.map(l => l.codigo_linha ?? l) 
             : [],
@@ -398,13 +411,14 @@ const salvarProdutoBaseLocal = () => {
     formData.append("slug", payload.slug);
     formData.append("ativo_site", payload.ativo_site);
     formData.append("recomendacao", payload.recomendacao);
+    formData.append("variantes", payload.variantes);
 
     // Adicionar variantes de forma segura
-    payload.variantes.forEach((item, index) => {
-        if (item !== undefined) {
-            formData.append(`variantes[${index}][codigo_produto]`, item);
-        }
-    });
+    // payload.variantes.forEach((item, index) => {
+    //     if (item !== undefined) {
+    //         formData.append(`variantes[${index}][codigo_produto]`, item);
+    //     }
+    // });
 
     // Adicionar linha de forma segura
     payload.linha.forEach((item, index) => {
@@ -447,7 +461,6 @@ const salvarProdutoBaseLocal = () => {
         });
 };
 
-
 const combos = () => {
     loading.value = true;
 
@@ -477,16 +490,13 @@ const viewImage = () => {
     })
 }
 
-const monitoramento = () => {
-    console.log(formProduto.value);
-}
-
 /**
  * Hooks
  */
 onMounted(() => {
     combos();
     getProdutos();
+    initialization();
 })
 
 </script>
