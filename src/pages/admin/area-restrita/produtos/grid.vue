@@ -1,5 +1,5 @@
 <template>
-    <v-card class="ma-2">
+    <v-card class="ma-2" :loading="loading">
         <v-card-title>Produtos Cadastrados</v-card-title>
         
         <v-card-subtitle>Pesquise por uma Produtos cadastrados</v-card-subtitle>
@@ -11,10 +11,11 @@
                 <v-row>
                     <v-col cols="12" md="12">
                         <v-text-field
-                        v-model="form.produto"
+                        v-model="form.nome_produto"
                         label="Produto"
                         variant="outlined"
-                        density="compact"/>
+                        density="compact"
+                        :loading="loading"/>
                     </v-col>
                     <!-- <v-col cols="12" md="4">
                         <v-text-field
@@ -37,6 +38,7 @@
                     <v-btn
                     variant="elevated"
                     color="primary"
+                    :loading="loading"
                     @click="getProdutos()">
                         <v-icon class="mr-1">mdi mdi-search-web</v-icon>
                         Pesquisar
@@ -49,7 +51,8 @@
     <v-card class="ma-2">
         <v-data-table
         :headers="headers"
-        :items="items">
+        :items="items"
+        :loading="loading">
             <template v-slot:top>
                 <v-toolbar flat>
                     <v-toolbar-title>Listagem de Produtos cadastrados</v-toolbar-title>
@@ -153,7 +156,7 @@ const headers = ref([
 const items = ref([]);
 const loading = ref(false);
 const form = ref({
-    produto: "",
+    nome_produto: "",
     // titulo: "",
     // data_publicacao: ""
 });
