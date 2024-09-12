@@ -50,8 +50,8 @@
                             variant="outlined"
                             density="compact"/>
                         </v-col>
-                        <v-col cols="12" md="12">
-                            <!-- <v-autocomplete
+                        <!-- <v-col cols="12" md="12">
+                            <v-autocomplete
                             :items="produtos"
                             v-model="formProduto.variantes"
                             variant="outlined"
@@ -66,14 +66,14 @@
                             :loading="loading"
                             label="Variantes"
                             @update:model-value="monitoramento()">
-                            </v-autocomplete> -->
+                            </v-autocomplete>
                             <v-text-field
                             v-model="formProduto.variantes"
                             variant="outlined"
                             density="compact"
                             label="Variantes"
                             />
-                        </v-col>
+                        </v-col> -->
                     </v-row>
                     <!-- <v-row>
                         <v-col cols="12" md="12">
@@ -91,6 +91,13 @@
                             density="compact"/>
                         </v-col>
                     </v-row> -->
+
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-label>Variantes: </v-label>
+                            <div id="editor-container-variantes" style="height: 25vh;"></div>
+                        </v-col>
+                    </v-row>
 
                     <v-row>
                         <v-col cols="12" md="12">
@@ -286,10 +293,81 @@ const imageSrc = ref('');
 const contentSubtitulo = ref('');
 const contentModoAcao = ref('');
 const contentRecomendacao = ref('');
+const contentVariantes = ref('');
 
 /**
  * Methods
  */
+
+const initialization = () => {
+    const toolbarOptions = [
+        [{ 'font': [] }],                          // Font family dropdown
+        [{ 'size': ['small', false, 'large', 'huge'] }], // Font size
+        ['bold', 'italic', 'underline', 'strike'], // Formatting buttons
+        [{ 'color': [] }, { 'background': [] }],   // Text color and background color
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],  // Ordered and bullet lists
+        [{ 'align': [] }],                         // Text alignment
+        [{ 'script': 'sub'}, { 'script': 'super' }],   // Subscript and superscript
+        ['blockquote', 'code-block'],              // Blockquote and code block
+        [{ 'indent': '-1'}, { 'indent': '+1' }],   // Indentation
+        [{ 'direction': 'rtl' }],                  // Text direction
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // Header sizes
+        ['link', 'image', 'video'],                // Insert link, image, and video
+        ['clean']                                  // Remove formatting
+    ];
+
+    const quillSubtitulo = new Quill('#editor-container-subtitulo', {
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
+    });
+
+    quillSubtitulo.on('editor-change', () => {
+        const html = quillSubtitulo.root.innerHTML;
+        contentSubtitulo.value = html;
+        console.log(contentSubtitulo.value);
+        
+    });
+
+    const quillModoAcao = new Quill('#editor-container-modo-acao', {
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
+    });
+
+    quillModoAcao.on('editor-change', () => {
+        const html = quillModoAcao.root.innerHTML;
+        contentModoAcao.value = html;
+    });
+
+    const quillRecomendacao = new Quill('#editor-container-recomendacao', {
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
+    });
+
+    quillRecomendacao.on('editor-change', () => {
+        const html = quillRecomendacao.root.innerHTML;
+        contentRecomendacao.value = html;
+    });
+
+    const quillVariantes = new Quill('#editor-container-variantes', {
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
+    });
+
+    quillVariantes.on('editor-change', () => {
+        const html = quillVariantes.root.innerHTML;
+        contentVariantes.value = html;
+    });
+    
+}
+
 const onFileChange = () => {
     console.log(formProduto.value.arquivo);
 }
@@ -352,6 +430,7 @@ const salvarProdutoBaseLocal = () => {
     formProduto.value.subtituloProduto = contentSubtitulo.value;
     formProduto.value.recomendacao = contentRecomendacao.value;
     formProduto.value.modoAcao = contentModoAcao.value;
+    formProduto.value.variantes = contentVariantes.value;
 
     const payload = {
         nomeProduto: formProduto.value.nomeProduto,
@@ -466,7 +545,7 @@ const viewImage = () => {
 /**
  * Hooks
  */
-onMounted(() => {
+ onMounted(() => {
     combos();
     getProdutos();
 
@@ -523,11 +602,24 @@ onMounted(() => {
         contentRecomendacao.value = html;
     });
 
+    const quillVariantes = new Quill('#editor-container-variantes', {
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
+    });
+
+    quillVariantes.on('editor-change', () => {
+        const html = quillVariantes.root.innerHTML;
+        contentVariantes.value = html;
+    });
+
     ajaxGetProduto(route.params.codigoproduto).then(() => {
         quillSubtitulo.root.innerHTML = formProduto.value.subtituloProduto;
         quillRecomendacao.root.innerHTML = formProduto.value.recomendacao;
         quillModoAcao.root.innerHTML = formProduto.value.modoAcao;
+        quillVariantes.root.innerHTML = formProduto.value.variantes;
     });
-})
+});
 
 </script>

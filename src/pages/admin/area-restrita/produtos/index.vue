@@ -50,8 +50,8 @@
                             variant="outlined"
                             density="compact"/>
                         </v-col>
-                        <v-col cols="12" md="12">
-                            <!-- <v-autocomplete
+                        <!-- <v-col cols="12" md="12">
+                            <v-autocomplete
                             :items="produtos"
                             v-model="formProduto.variantes"
                             variant="outlined"
@@ -66,14 +66,14 @@
                             :loading="loading"
                             label="Variantes"
                             @update:model-value="monitoramento()">
-                            </v-autocomplete> -->
+                            </v-autocomplete>
                             <v-text-field
                             v-model="formProduto.variantes"
                             variant="outlined"
                             density="compact"
                             label="Variantes"
                             />
-                        </v-col>
+                        </v-col> -->
                     </v-row>
                     <!-- <v-row>
                         <v-col cols="12" md="12">
@@ -91,6 +91,13 @@
                             density="compact"/>
                         </v-col>
                     </v-row> -->
+
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-label>Variantes: </v-label>
+                            <div id="editor-container-variantes" style="height: 25vh;"></div>
+                        </v-col>
+                    </v-row>
 
                     <v-row>
                         <v-col cols="12" md="12">
@@ -284,6 +291,7 @@ const imageSrc = ref('');
 const contentSubtitulo = ref('');
 const contentModoAcao = ref('');
 const contentRecomendacao = ref('');
+const contentVariantes = ref('');
 
 /**
  * Methods
@@ -343,6 +351,19 @@ const initialization = () => {
         const html = quillRecomendacao.root.innerHTML;
         contentRecomendacao.value = html;
     });
+
+    const quillVariantes = new Quill('#editor-container-variantes', {
+        theme: 'snow',
+        modules: {
+            toolbar: toolbarOptions
+        }
+    });
+
+    quillVariantes.on('editor-change', () => {
+        const html = quillVariantes.root.innerHTML;
+        contentVariantes.value = html;
+    });
+    
 }
 
 const onFileChange = () => {
@@ -379,6 +400,7 @@ const salvarProdutoBaseLocal = () => {
     formProduto.value.subtituloProduto = contentSubtitulo.value;
     formProduto.value.recomendacao = contentRecomendacao.value;
     formProduto.value.modoAcao = contentModoAcao.value;
+    formProduto.value.variantes = contentVariantes.value;
 
     const payload = {
         nomeProduto: formProduto.value.nomeProduto,

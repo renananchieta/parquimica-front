@@ -8,11 +8,11 @@
                     <v-col cols="12" md="3">
                         <v-card 
                         elevation="3" 
-                        @click="navegarPara('/admin/area-restrita/produtos')">
+                        @click="navegarPara('/admin/area-restrita/produtos/grid')">
                             <v-card-title> <v-icon>mdi mdi-list-box-outline</v-icon> Produtos</v-card-title>
                             <v-card-subtitle class="mb-2">Editar informações de produtos</v-card-subtitle>
                             <v-card-actions>
-                                <v-btn color="primary" variant="elevated" @click="navegarPara('/admin/area-restrita/produtos')">Acessar</v-btn>
+                                <v-btn color="primary" variant="elevated" @click="navegarPara('/admin/area-restrita/produtos/grid')">Acessar</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-col>
