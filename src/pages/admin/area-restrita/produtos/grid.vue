@@ -9,29 +9,45 @@
         <v-card-text>
             <v-form @submit.prevent="getProdutos()">
                 <v-row>
-                    <v-col cols="12" md="12">
-                        <v-text-field
-                        v-model="form.nome_produto"
-                        label="Produto"
+                    <v-col cols="12" md="4">
+                        <auto-complete-remoto
+                        v-model="form.codigo_produto"
+                        v-model:valor.sync="produtos"
+                        :carregando="loading"
+                        item-title="nome_produto"
+                        item-value="codigo_produto"
+                        label="Buscar Produto"
+                        @pesquisa-autocomplete="getProdutos()"
                         variant="outlined"
                         density="compact"
-                        :loading="loading"/>
-                    </v-col>
-                    <!-- <v-col cols="12" md="4">
-                        <v-text-field
-                        v-model="form.linha"
-                        label="Título"
-                        variant="outlined"
-                        density="compact"/>
+                        append-inner-icon="mdi mdi-list-box-outline"/>
                     </v-col>
                     <v-col cols="12" md="4">
-                        <v-text-field
-                        v-model="form.funcao"
-                        label="Data de publicação"
+                        <auto-complete-remoto
+                        v-model="form.codigo_linha"
+                        v-model:valor.sync="linhas"
+                        :carregando="loading"
+                        item-title="descricao_linha"
+                        item-value="codigo_linha"
+                        label="Linha"
+                        @pesquisa-autocomplete="getProdutos()"
                         variant="outlined"
-                        type="date"
-                        density="compact"/>
-                    </v-col> -->
+                        density="compact"
+                        append-inner-icon="mdi mdi-list-box-outline"/>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                        <auto-complete-remoto
+                        v-model="form.codigo_funcao"
+                        v-model:valor.sync="funcoes"
+                        :carregando="loading"
+                        item-title="descricao_funcao"
+                        item-value="codigo_funcao"
+                        label="Função"
+                        @pesquisa-autocomplete="getProdutos()"
+                        variant="outlined"
+                        density="compact"
+                        append-inner-icon="mdi mdi-list-box-outline"/>
+                    </v-col>
                 </v-row>
 
                 <v-card-actions>
@@ -51,7 +67,7 @@
     <v-card class="ma-2">
         <v-data-table
         :headers="headers"
-        :items="items"
+        :items="produtos"
         :loading="loading">
             <template v-slot:top>
                 <v-toolbar flat>
@@ -144,6 +160,7 @@ import api from '@/plugins/api';
 import router from '@/router';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
+import AutoCompleteRemoto from "@/components/AutoCompleteRemoto.vue";
 
 /**
  * Data
@@ -156,27 +173,44 @@ const headers = ref([
 const items = ref([]);
 const loading = ref(false);
 const form = ref({
-    nome_produto: "",
-    // titulo: "",
-    // data_publicacao: ""
+    codigo_produto: "",
+    codigo_funcao: "",
+    codigo_linha: ""
 });
 const dialogConfirm = ref(false);
 const dialogAlert = ref(false);
 const icon = ref('');
 const color = ref('');
 const mensagemTitle = ref('');
+const linhas = ref([]);
+const funcoes = ref([]);
+const produtos = ref([]);
 
 /**
  * Methods
  */
+ const combos = () => {
+    loading.value = true;
+
+    api.get('/area-restrita/combos/linhas-funcoes')
+    .then((response) => {
+        funcoes.value = response.data.funcoes;
+        linhas.value = response.data.linhas;
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+    .finally(() => {
+        loading.value = false;
+    })
+}
+
 const getProdutos = () => {
     loading.value = true;
 
-    api.get('/area-restrita/produtos/base-local/todos', {params: form.value})
+    api.get('/area-restrita/produtos/base-local', {params: form.value})
     .then((response) => {
-        console.log(response.data);
-
-        items.value = response.data;
+        produtos.value = response.data;
     }).catch((error) => {
         console.log(error);
     })
@@ -184,6 +218,10 @@ const getProdutos = () => {
         loading.value = false;
     })
 } 
+
+const ajaxGetProdutos = () => {
+
+}
 
 const editItem = (item) => {
     router.push(`/admin/area-restrita/produtos/${item.codigo_produto}`)    
@@ -227,6 +265,7 @@ const teste = () => {
     
 onMounted(() => {
     getProdutos();
+    combos();
 })
 
 </script>
