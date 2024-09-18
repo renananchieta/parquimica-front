@@ -98,14 +98,14 @@
 
                 <v-dialog v-model="dialogConfirm">
                     <v-card width="auto" class="pa-4 text-center mx-auto">
-                        <v-card-text class="text-h6">Deseja mesmo remover esta publicação?</v-card-text>
+                        <v-card-text class="text-h6">Deseja mesmo remover este produto?</v-card-text>
                         <v-card-actions class="pa-4 text-center mx-auto">
                             <v-btn
                             class="mr-2"
                             :loading="loading"
                             variant="elevated"
                             color="red"
-                            @click="confirmarRemoverPublicacao(item)">
+                            @click="confirmarRemoverProduto(item)">
                                 Remover
                             </v-btn>
                             <v-btn
@@ -229,13 +229,14 @@ const editItem = (item) => {
 }
 
 const deleteItem = (item) => {
+    console.log(item);
     dialogConfirm.value = true;
 }
 
-const confirmarRemoverPublicacao = (item) => {
+const confirmarRemoverProduto = (item) => {
     loading.value = true;
 
-    api.delete(`/area-restrita/blog/postagem/${item.id}`)
+    api.delete(`/area-restrita/produto/${item.id}`)
     .then((response) => {
         icon.value = 'mdi-check-circle';
         color.value = 'success';
@@ -251,7 +252,7 @@ const confirmarRemoverPublicacao = (item) => {
     })
     .finally(() => {
         loading.value = false;
-        getPostagensSite();
+        getProdutos();
     })
 }
 
