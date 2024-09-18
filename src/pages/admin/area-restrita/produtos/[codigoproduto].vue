@@ -171,6 +171,7 @@
                             label="Imagem"
                             v-model="formProduto.arquivo"
                             variant="outlined"
+                            accept="image/*"
                             density="compact"
                             show-size
                             @update:modelValue="onFileChange()"

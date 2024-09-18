@@ -90,11 +90,11 @@
                 @click="editItem(item)">
                     mdi-pencil
                 </v-icon>
-                <!-- <v-icon
+                <v-icon
                 size="small"
                 @click="deleteItem(item)">
                     mdi-delete
-                </v-icon> -->
+                </v-icon>
 
                 <v-dialog v-model="dialogConfirm">
                     <v-card width="auto" class="pa-4 text-center mx-auto">
@@ -168,6 +168,7 @@ import AutoCompleteRemoto from "@/components/AutoCompleteRemoto.vue";
 const headers = ref([
     {title: "Código do produto", key: "codigo_produto"},
     {title: "Produto", key: "nome_produto"},
+    // {title: "Ação", key: "modo_acao"},
     {title: "Ações", align: "end", key: "actions"},
 ]);
 const items = ref([]);
